@@ -4,6 +4,7 @@ const dialect = DIALECT as Dialect | undefined;
 
 class Orm {
   private static instance: Sequelize;
+
   public static async getInstance(): Promise<Sequelize> {
     try {
       if (!Orm.instance) {
@@ -25,11 +26,11 @@ class Orm {
           );
         }
         Orm.instance = new Sequelize(
-          `${DATABASE}`,
-          `${USERNAME}`,
-          `${PASSWORD}`,
+          DATABASE as string,
+          USERNAME as string,
+          PASSWORD as string,
           {
-            host: `${HOST}`,
+            host: HOST as string,
             dialect: dialect,
           }
         );
@@ -42,3 +43,5 @@ class Orm {
     return Orm.instance;
   }
 }
+
+export default Orm;

@@ -1,6 +1,7 @@
 import express, { Application } from "express";
 import morgan from "morgan";
 import cors from "cors";
+import Routes from "./routes";
 
 class App {
   private app: Application;
@@ -14,7 +15,10 @@ class App {
     this.app.use(cors());
     this.app.use(express.json());
   }
-  private initializeRoutes() {}
+  private initializeRoutes() {
+    const routes = new Routes().getRoutes();
+    this.app.use("/", routes);
+  }
   public listen(port: number): void {
     this.app.listen(port, () => {
       console.log(`Server is running on port ${port}`);
