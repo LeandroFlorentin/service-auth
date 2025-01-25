@@ -1,23 +1,20 @@
-import { TypeSequelize } from "./types/sequelize.types";
+import { TypeSequelize, TypeModel } from "./types/sequelize.types";
 import Orm from "./utils/sequelize";
 import Models from "./models/index";
 
 interface IModelsReturn {
-  [key: string]: any;
+  [key: string]: TypeModel;
 }
 
 class Database {
   private static models: IModelsReturn = {};
-  constructor() {
-    this.syncModels();
-    this.connect();
+
+  static async connect() {
+    const sequelize = await Orm.getInstance();
+    await this.syncModels(sequelize);
   }
-  private async connect() {
-    return await Orm.getInstance();
-  }
-  private async syncModels(): Promise<void> {
-    const sequelize = await this.connect();
-    const models: { [key: string]: (sequelize: TypeSequelize) => void } =
+  private static async syncModels(sequelize: TypeSequelize): Promise<void> {
+    const models: { [key: string]: (sequelize: TypeSequelize) => TypeModel } =
       Models;
     for (const model in models) {
       Database.models[model] = models[model](sequelize);

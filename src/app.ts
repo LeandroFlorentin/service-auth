@@ -2,6 +2,7 @@ import express, { Application } from "express";
 import morgan from "morgan";
 import cors from "cors";
 import Routes from "./routes";
+import Database from "./db";
 
 class App {
   private app: Application;
@@ -19,8 +20,14 @@ class App {
     const routes = new Routes().getRoutes();
     this.app.use("/", routes);
   }
+
+  public async connectDatabase(): Promise<void> {
+    await Database.connect();
+  }
+
   public listen(port: number): void {
-    this.app.listen(port, () => {
+    this.app.listen(port, async () => {
+      await this.connectDatabase();
       console.log(`Server is running on port ${port}`);
     });
   }

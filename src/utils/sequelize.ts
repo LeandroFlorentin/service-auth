@@ -1,5 +1,5 @@
 import { Sequelize, Dialect } from "sequelize";
-const { DATABASE, USERNAME, PASSWORD, HOST, DIALECT } = process.env;
+const { DATABASE, USER, PASSWORD, HOST, DIALECT } = process.env;
 const dialect = DIALECT as Dialect | undefined;
 
 class Orm {
@@ -25,12 +25,13 @@ class Orm {
             `The dialec (DIALECT) is not valid. To owe be one of the: mysql, postgres, sqlite, mariadb, mssql, db2, snowflake, oracle.`
           );
         }
+        console.log(DATABASE, USER, PASSWORD, HOST, dialect);
         Orm.instance = new Sequelize(
-          DATABASE as string,
-          USERNAME as string,
-          PASSWORD as string,
+          `${DATABASE}` as string,
+          `${USER}` as string,
+          `${PASSWORD}` as string,
           {
-            host: HOST as string,
+            host: `${HOST}` as string,
             dialect: dialect,
           }
         );
