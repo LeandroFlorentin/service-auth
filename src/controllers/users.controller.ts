@@ -16,14 +16,11 @@ class classUserController {
   }
   private async createUser(req: RequestWithUser, res: Response, next: NextFunction) {
     try {
-      const UserModel = Database.getModel('user');
-      if (!UserModel) {
-        return res.status(500).json(errorStructure(500, 'Model not found', 'DatabaseError'));
-      }
+      const UserModel = Database.getModel('users');
+      if (!UserModel) return res.status(500).json(errorStructure(500, 'Model not found', 'DatabaseError'));
       req.body.password = req.body.password && (await hashPassword(req.body?.password));
       const user = await UserModel.create(req.body);
       return res.status(201).json(user);
-      //Create user logic for creating user
     } catch (error: any) {
       next(error);
     }
