@@ -4,6 +4,7 @@ import cors from "cors";
 import Routes from "./routes";
 import Database from "./db";
 import { TypeSequelize } from "./types/sequelize.types";
+import { middlewareError } from "./middlewares/error.middleware";
 
 class App {
   private app: Application;
@@ -11,15 +12,21 @@ class App {
     this.app = express();
     this.initializeMiddlewares();
     this.initializeRoutes();
+    this.initializeErrorMiddleware();
   }
+  private initializeRoutes() {
+    const routes = new Routes().getRoutes();
+    this.app.use("/", routes);
+  }
+
   private initializeMiddlewares(): void {
     this.app.use(morgan("dev"));
     this.app.use(cors());
     this.app.use(express.json());
   }
-  private initializeRoutes() {
-    const routes = new Routes().getRoutes();
-    this.app.use("/", routes);
+
+  private initializeErrorMiddleware(): void {
+    this.app.use(middlewareError);
   }
 
   public async connectDatabase(): Promise<TypeSequelize> {
