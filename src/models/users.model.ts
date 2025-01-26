@@ -7,7 +7,7 @@ type UserAttributes = {
   username: string;
   email: string;
   password: string;
-  role: string;
+  role: number;
 };
 
 type UserCreationAttributes = Optional<UserAttributes, "id">;
@@ -17,7 +17,7 @@ class User extends Model<UserAttributes, UserCreationAttributes> {
   declare username: string;
   declare email: string;
   declare password: string;
-  declare role: string;
+  declare role: number;
   declare readonly createdAt: Date;
   declare readonly updatedAt: Date;
 }

@@ -3,6 +3,7 @@ import morgan from "morgan";
 import cors from "cors";
 import Routes from "./routes";
 import Database from "./db";
+import { TypeSequelize } from "./types/sequelize.types";
 
 class App {
   private app: Application;
@@ -21,13 +22,14 @@ class App {
     this.app.use("/", routes);
   }
 
-  public async connectDatabase(): Promise<void> {
-    await Database.connect();
+  public async connectDatabase(): Promise<TypeSequelize> {
+    return await Database.connect();
   }
 
   public listen(port: number): void {
     this.app.listen(port, async () => {
-      await this.connectDatabase();
+      const connect = await this.connectDatabase();
+      connect.sync({ force: true });
       console.log(`Server is running on port ${port}`);
     });
   }

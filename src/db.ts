@@ -9,9 +9,10 @@ interface IModelsReturn {
 class Database {
   private static models: IModelsReturn = {};
 
-  static async connect() {
+  static async connect(): Promise<TypeSequelize> {
     const sequelize = await Orm.getInstance();
     await this.syncModels(sequelize);
+    return sequelize;
   }
   private static async syncModels(sequelize: TypeSequelize): Promise<void> {
     const models: { [key: string]: (sequelize: TypeSequelize) => TypeModel } =
