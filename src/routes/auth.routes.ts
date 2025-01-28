@@ -1,9 +1,9 @@
-import classUserController from '../controllers/users.controller';
 import { Router } from 'express';
+import classAuthController from '../controllers/auth.controller';
 
-class RouteUsers {
+class RoutesAuth {
   private router: Router = Router();
-  private controllers = new classUserController().getControllers();
+  private controllers = new classAuthController().getControlllers();
 
   public getRoutes(): Router {
     this.controllers.forEach((route) => this.router[route.method](`${route.path}`, route.handler));
@@ -11,4 +11,4 @@ class RouteUsers {
   }
 }
 
-export default RouteUsers;
+export default RoutesAuth;

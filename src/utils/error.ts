@@ -1,7 +1,7 @@
-export function errorStructure(status: number, message: string, name: string) {
+export function responseStructure(status: number, message: string, data: any) {
   return {
     status,
     message,
-    name,
+    data,
   };
 }

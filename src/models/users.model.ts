@@ -1,6 +1,6 @@
-import { DataTypes, Model, Optional } from "sequelize";
-import { Sequelize } from "sequelize";
-import { TypeModel } from "../types/sequelize.types";
+import { DataTypes, Model, Optional } from 'sequelize';
+import { Sequelize } from 'sequelize';
+import { TypeModel } from '../types/sequelize.types';
 
 type UserAttributes = {
   id: number;
@@ -10,7 +10,7 @@ type UserAttributes = {
   role: number;
 };
 
-type UserCreationAttributes = Optional<UserAttributes, "id">;
+type UserCreationAttributes = Optional<UserAttributes, 'id'>;
 
 class User extends Model<UserAttributes, UserCreationAttributes> {
   declare id: number;
@@ -51,7 +51,7 @@ export default (sequelize: Sequelize): TypeModel => {
     },
     {
       sequelize,
-      tableName: "users",
+      tableName: 'users',
       timestamps: true,
     }
   );

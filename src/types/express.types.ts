@@ -3,7 +3,14 @@ import {
   Response as ResponseExpress,
   NextFunction as NextFunctionExpress,
   ErrorRequestHandler as ErrorRequestHandlerExpress,
-} from "express";
+} from 'express';
+
+export interface RequestWhenLogin extends RequestExpress {
+  body: {
+    username: string;
+    password: string;
+  };
+}
 export interface RequestWithUser extends RequestExpress {
   body: {
     username: string;

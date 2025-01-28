@@ -1,6 +1,6 @@
 import { hashPassword } from '../utils/bcrypt';
 import { RequestWithUser, Response, NextFunction } from '../types/express.types';
-import { errorStructure } from '../utils/error';
+import { responseStructure } from '../utils/error';
 import Database from '../db';
 
 interface IControllers {
@@ -16,11 +16,16 @@ class classUserController {
   }
   private async createUser(req: RequestWithUser, res: Response, next: NextFunction) {
     try {
-      const UserModel = Database.getModel('users');
-      if (!UserModel) return res.status(500).json(errorStructure(500, 'Model not found', 'DatabaseError'));
+      const model = 'users';
+      const UserModel = Database.getModel(model);
+      if (!UserModel) return res.status(500).json(responseStructure(500, 'Model not found', { model }));
       req.body.password = req.body.password && (await hashPassword(req.body?.password));
-      const user = await UserModel.create(req.body);
-      return res.status(201).json(user);
+      const user: any = await UserModel.create(req.body);
+      const { dataValues: values } = user;
+      delete values.password;
+      delete values.createdAt;
+      delete values.updatedAt;
+      return res.status(200).json(responseStructure(200, `User ${req.body.username} is succesfull created`, { ...values }));
     } catch (error: any) {
       next(error);
     }

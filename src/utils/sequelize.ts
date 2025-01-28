@@ -1,4 +1,4 @@
-import { Sequelize, Dialect } from "sequelize";
+import { Sequelize, Dialect } from 'sequelize';
 const { DATABASE, USER, PASSWORD, HOST, DIALECT } = process.env;
 const dialect = DIALECT as Dialect | undefined;
 
@@ -8,38 +8,20 @@ class Orm {
   public static async getInstance(): Promise<Sequelize> {
     try {
       if (!Orm.instance) {
-        if (
-          !DIALECT ||
-          ![
-            "mysql",
-            "postgres",
-            "sqlite",
-            "mariadb",
-            "mssql",
-            "db2",
-            "snowflake",
-            "oracle",
-          ].includes(DIALECT)
-        ) {
+        if (!DIALECT || !['mysql', 'postgres', 'sqlite', 'mariadb', 'mssql', 'db2', 'snowflake', 'oracle'].includes(DIALECT)) {
           throw new Error(
             `The dialec (DIALECT) is not valid. To owe be one of the: mysql, postgres, sqlite, mariadb, mssql, db2, snowflake, oracle.`
           );
         }
-        console.log(DATABASE, USER, PASSWORD, HOST, dialect);
-        Orm.instance = new Sequelize(
-          `${DATABASE}` as string,
-          `${USER}` as string,
-          `${PASSWORD}` as string,
-          {
-            host: `${HOST}` as string,
-            dialect: dialect,
-          }
-        );
+        Orm.instance = new Sequelize(`${DATABASE}` as string, `${USER}` as string, `${PASSWORD}` as string, {
+          host: `${HOST}` as string,
+          dialect: dialect,
+        });
       }
       await Orm.instance.authenticate();
-      console.log("Connection has been established successfully.");
+      console.log('Connection has been established successfully.');
     } catch (error) {
-      console.error("Unable to connect to the database:", error);
+      console.error('Unable to connect to the database:', error);
     }
     return Orm.instance;
   }
