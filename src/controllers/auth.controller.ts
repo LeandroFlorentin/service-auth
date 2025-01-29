@@ -2,7 +2,7 @@ import { RequestWhenLogin, Response, NextFunction } from '../types/express.types
 import Database from '../db';
 import { getToken } from '../utils/jwt';
 import { hashPassword, comparePassword } from '../utils/bcrypt';
-import { responseStructure } from '../utils/error';
+import { responseStructure } from '../utils/response';
 
 interface IControllers {
   path: string;

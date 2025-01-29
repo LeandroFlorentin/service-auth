@@ -1,10 +1,11 @@
 import express, { Application } from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
-import Routes from './routes';
+import Routes from './routes/index';
 import Database from './db';
 import { TypeSequelize } from './types/sequelize.types';
 import { middlewareError } from './middlewares/error.middleware';
+import swagger from './swagger/swagger';
 
 class App {
   private app: Application;
@@ -37,6 +38,7 @@ class App {
     this.app.listen(port, async () => {
       const connect = await this.connectDatabase();
       connect.sync({ force: true });
+      swagger(this.app, port);
       console.log(`Server is running on port ${port}`);
     });
   }

@@ -1,6 +1,6 @@
 import { hashPassword } from '../utils/bcrypt';
 import { RequestWithUser, Response, NextFunction } from '../types/express.types';
-import { responseStructure } from '../utils/error';
+import { responseStructure } from '../utils/response';
 import Database from '../db';
 
 interface IControllers {

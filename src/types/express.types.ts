@@ -3,7 +3,13 @@ import {
   Response as ResponseExpress,
   NextFunction as NextFunctionExpress,
   ErrorRequestHandler as ErrorRequestHandlerExpress,
+  Application as ApplicationExpress,
+  Router as RouterExpress,
 } from 'express';
+
+export type Router = RouterExpress;
+
+export type Application = ApplicationExpress;
 
 export interface RequestWhenLogin extends RequestExpress {
   body: {
