@@ -20,7 +20,7 @@ class classUserController {
       const UserModel = Database.getModel(model);
       if (!UserModel) return res.status(500).json(responseStructure(500, 'Model not found', { model }));
       req.body.password = req.body.password && (await hashPassword(req.body?.password));
-      const user: any = await UserModel.create(req.body);
+      const user: any = await UserModel.create({ ...req.body, role: JSON.stringify(req.body.role) });
       const { dataValues: values } = user;
       delete values.password;
       delete values.createdAt;

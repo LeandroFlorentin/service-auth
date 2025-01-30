@@ -45,8 +45,8 @@ export default (sequelize: Sequelize): TypeModel => {
         allowNull: false,
       },
       role: {
-        type: DataTypes.INTEGER,
-        defaultValue: 1,
+        type: DataTypes.JSON,
+        defaultValue: '[1]',
       },
     },
     {

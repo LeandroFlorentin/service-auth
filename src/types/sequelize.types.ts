@@ -1,3 +1,4 @@
-import { Sequelize, Model, ModelStatic } from "sequelize";
+import { Sequelize, Model, ModelStatic, Op } from 'sequelize';
 export type TypeSequelize = Sequelize;
 export type TypeModel = ModelStatic<Model>;
+export type TypeOp = typeof Op;

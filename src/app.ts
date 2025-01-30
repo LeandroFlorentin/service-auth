@@ -5,6 +5,7 @@ import Routes from './routes/index';
 import Database from './db';
 import { TypeSequelize } from './types/sequelize.types';
 import { middlewareError } from './middlewares/error.middleware';
+import UserPrueba from './utils/user';
 import swagger from './swagger/swagger';
 
 class App {
@@ -37,9 +38,12 @@ class App {
   public listen(port: number): void {
     this.app.listen(port, async () => {
       const connect = await this.connectDatabase();
-      connect.sync({ force: true });
-      swagger(this.app, port);
-      console.log(`Server is running on port ${port}`);
+      connect.sync({ force: true }).then(() => {
+        swagger(this.app, port);
+        UserPrueba.createUser().then(() => {
+          console.log(`Server is running on port ${port}`);
+        });
+      });
     });
   }
 }

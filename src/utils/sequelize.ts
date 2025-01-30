@@ -1,4 +1,5 @@
-import { Sequelize, Dialect } from 'sequelize';
+import { Sequelize, Dialect, Op as OpSequelize } from 'sequelize';
+import { TypeOp } from '../types/sequelize.types';
 const { DATABASE, USER, PASSWORD, HOST, DIALECT } = process.env;
 const dialect = DIALECT as Dialect | undefined;
 
@@ -19,12 +20,15 @@ class Orm {
         });
       }
       await Orm.instance.authenticate();
+
       console.log('Connection has been established successfully.');
     } catch (error) {
       console.error('Unable to connect to the database:', error);
     }
     return Orm.instance;
   }
+
+  public static Op = OpSequelize;
 }
 
 export default Orm;
