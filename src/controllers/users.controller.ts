@@ -25,6 +25,7 @@ class classUserController {
       delete values.password;
       delete values.createdAt;
       delete values.updatedAt;
+      values.role = JSON.parse(values.role);
       return res.status(200).json(responseStructure(200, `User ${req.body.username} is succesfull created`, { ...values }));
     } catch (error: any) {
       next(error);

@@ -24,7 +24,6 @@ class classAuthControllers {
       const user: any = await model.findOne({ where: { username: { [Orm.Op.iLike]: req.body.username } } });
       if (!user) return res.status(404).json(responseStructure(404, `Username incorrect`, {}));
       const isPasswordValid = await comparePassword(req.body.password, user.password);
-      console.log(isPasswordValid);
       if (!isPasswordValid) return res.status(404).json(responseStructure(404, `Password incorrect`, {}));
       const token = getToken({});
       const dataUser = user.dataValues;
