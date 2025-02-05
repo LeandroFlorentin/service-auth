@@ -6,7 +6,10 @@ class RoutesAuth {
   private controllers = new classAuthController().getControlllers();
 
   public getRoutes(): Router {
-    this.controllers.forEach((route) => this.router[route.method](`${route.path}`, route.handler));
+    this.controllers.forEach((route) => {
+      const middlewares = route.middlewares || [];
+      this.router[route.method](`${route.path}`, ...middlewares, route.handler);
+    });
     return this.router;
   }
 }

@@ -1,4 +1,13 @@
 import jwt from 'jsonwebtoken';
 const { JWT_SECRET } = process.env;
 
-export const getToken = (data: any): string => jwt.sign({ data }, JWT_SECRET as string, { expiresIn: '1h' });
+interface IDataToken {
+  username: string;
+  role: string;
+  email: string;
+  id: number;
+}
+
+export const getToken = (data: IDataToken): string => jwt.sign({ data }, JWT_SECRET as string, { expiresIn: '1h' });
+
+export const decodedToken = (token: string): any => jwt.verify(token, JWT_SECRET as string);

@@ -11,6 +11,12 @@ export type Router = RouterExpress;
 
 export type Application = ApplicationExpress;
 
+export interface RequestWhenAuth extends RequestExpress {
+  headers: {
+    authorization: string;
+  };
+}
+
 export interface RequestWhenLogin extends RequestExpress {
   body: {
     username: string;

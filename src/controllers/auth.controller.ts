@@ -9,6 +9,7 @@ interface IControllers {
   path: string;
   handler: (req: RequestWhenLogin, res: Response, next: NextFunction) => void;
   method: 'post' | 'get' | 'put' | 'delete' | 'patch';
+  middlewares?: ((req: any, res: Response, next: NextFunction) => void)[];
 }
 
 class classAuthControllers {
@@ -18,18 +19,18 @@ class classAuthControllers {
     this.initializeControllers();
   }
 
-  private async login(req: RequestWhenLogin, res: Response, next: NextFunction): Promise<any> {
+  private async login(req: RequestWhenLogin, res: Response, next: NextFunction) {
     try {
       const model = Database.getModel('users');
       const user: any = await model.findOne({ where: { username: { [Orm.Op.iLike]: req.body.username } } });
       if (!user) return res.status(404).json(responseStructure(404, `Username incorrect`, {}));
       const isPasswordValid = await comparePassword(req.body.password, user.password);
       if (!isPasswordValid) return res.status(404).json(responseStructure(404, `Password incorrect`, {}));
-      const token = getToken({});
       const dataUser = user.dataValues;
       delete dataUser.password;
       delete dataUser.createdAt;
       delete dataUser.updatedAt;
+      const token = getToken(dataUser);
       return res.status(200).json(responseStructure(200, 'Succesfull Auth', { ...dataUser, access_token: token }));
     } catch (error: any) {
       next(error);
