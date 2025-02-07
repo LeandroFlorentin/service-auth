@@ -2,11 +2,13 @@ import { hashPassword } from '../utils/bcrypt';
 import { RequestWithUser, Response, NextFunction } from '../types/express.types';
 import { responseStructure } from '../utils/response';
 import Database from '../db';
+import { middlewareDecoded } from '../middlewares/decoded.middleware';
 
 interface IControllers {
   path: string;
   handler: (req: RequestWithUser, res: Response, next: NextFunction) => void;
   method: 'post' | 'get' | 'put' | 'delete' | 'patch';
+  middlewares?: ((req: any, res: Response, next: NextFunction) => void)[];
 }
 
 class classUserController {
@@ -32,7 +34,7 @@ class classUserController {
     }
   }
   private initializeControllers(): void {
-    this.controllers = [{ method: 'post', path: '/create', handler: this.createUser }];
+    this.controllers = [{ method: 'post', path: '/create', handler: this.createUser, middlewares: [middlewareDecoded] }];
   }
   public getControllers(): IControllers[] {
     return this.controllers;

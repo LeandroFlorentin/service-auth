@@ -9,9 +9,10 @@ export function middlewareDecoded(req: RequestWhenAuth, res: Response, next: Nex
     if (!authHeader) return res.status(401).json(responseStructure(401, 'Token not send', {}));
     const bearerToken = getBearerToken(authHeader);
     const decoded = decodedToken(bearerToken);
+    req.user = decoded.data;
     next();
-  } catch (error) {
-    console.log('ERROR', error);
-    next(error);
+  } catch (error: any) {
+    const errorObj = { data: error, type: 'jwt', status: 401 };
+    next(errorObj);
   }
 }

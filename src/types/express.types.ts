@@ -11,7 +11,16 @@ export type Router = RouterExpress;
 
 export type Application = ApplicationExpress;
 
-export interface RequestWhenAuth extends RequestExpress {
+interface IUser {
+  user?: {
+    username: string;
+    role: string;
+    email: string;
+    id: number;
+  };
+}
+
+export interface RequestWhenAuth extends RequestExpress, IUser {
   headers: {
     authorization: string;
   };
@@ -23,7 +32,7 @@ export interface RequestWhenLogin extends RequestExpress {
     password: string;
   };
 }
-export interface RequestWithUser extends RequestExpress {
+export interface RequestWithUser extends RequestExpress, IUser {
   body: {
     username: string;
     email: string;

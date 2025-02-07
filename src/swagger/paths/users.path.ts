@@ -3,6 +3,11 @@ export default [
     path: '/users/create',
     object: {
       post: {
+        security: [
+          {
+            bearerAuth: [],
+          },
+        ],
         tags: ['Users'],
         requestBody: {
           content: {
