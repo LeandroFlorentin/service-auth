@@ -3,6 +3,7 @@ import { RequestWithUser, Response, NextFunction, Request } from '../types/expre
 import { responseStructure } from '../utils/response';
 import Database from '../db';
 import { middlewareDecoded } from '../middlewares/decoded.middleware';
+import { getDate } from '../utils/moment';
 
 interface IControllers {
   path: string;
@@ -12,14 +13,15 @@ interface IControllers {
 }
 
 class classUserController {
+  private middlewares = [middlewareDecoded];
   private model: string = 'users';
   private controllers: IControllers[] = [];
+
   constructor() {
-    this.createUser = this.createUser.bind(this);
-    this.getUser = this.getUser.bind(this);
     this.initializeControllers();
   }
-  private async createUser(req: RequestWithUser, res: Response, next: NextFunction) {
+
+  private createUser = async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
       const UserModel = Database.getModel(this.model);
       if (!UserModel) return res.status(500).json(responseStructure(500, 'Model not found', { model: this.model }));
@@ -34,14 +36,15 @@ class classUserController {
     } catch (error: any) {
       next(error);
     }
-  }
-  private async getUser(req: Request, res: Response, next: NextFunction) {
+  };
+
+  private getUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.user!;
       const UserModel = Database.getModel(this.model);
       if (!UserModel) return res.status(500).json(responseStructure(500, 'Model not found', { model: this.model }));
-      const user = await UserModel.findOne({ where: { id } });
-      if (!user) return res.status(404).json(responseStructure(404, 'User not found', { id }));
+      const user = await UserModel.findOne({ where: { id, disabled: 0 } });
+      if (!user) return res.status(404).json(responseStructure(404, 'User not found', { iduser: id }));
       const { dataValues: values } = user;
       delete values.password;
       values.role = JSON.parse(values.role);
@@ -49,11 +52,38 @@ class classUserController {
     } catch (error) {
       next(error);
     }
-  }
+  };
+
+  private disabledUser = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id } = req.user!;
+      const UserModel = Database.getModel(this.model);
+      if (!UserModel) return res.status(500).json(responseStructure(500, 'Model not found', { model: this.model }));
+      const userDeleted = await UserModel.update({ disabled: 1, updatedAt: getDate() }, { where: { id } });
+      return res.status(200).json(responseStructure(200, 'Succesfully delete user', { ...userDeleted }));
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  private updateUser = async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    try {
+      const { id } = req.user!;
+      const UserModel = Database.getModel(this.model);
+      if (!UserModel) return res.status(500).json(responseStructure(500, 'Model not found', { model: this.model }));
+      const updatedUser = await UserModel.update({ ...req.body, updatedAt: getDate() }, { where: { id } });
+      return res.status(200).json(responseStructure(200, 'Succesfully upload user', { ...updatedUser }));
+    } catch (error) {
+      next(error);
+    }
+  };
+
   private initializeControllers(): void {
     this.controllers = [
-      { method: 'get', path: '/me', handler: this.getUser, middlewares: [middlewareDecoded] },
-      { method: 'post', path: '/create', handler: this.createUser, middlewares: [middlewareDecoded] },
+      { method: 'get', path: '/me', handler: this.getUser, middlewares: [...this.middlewares] },
+      { method: 'post', path: '/create', handler: this.createUser, middlewares: [...this.middlewares] },
+      { method: 'delete', path: '/delete', handler: this.disabledUser, middlewares: [...this.middlewares] },
+      { method: 'put', path: '/update', handler: this.updateUser, middlewares: [...this.middlewares] },
     ];
   }
   public getControllers(): IControllers[] {

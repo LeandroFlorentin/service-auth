@@ -8,6 +8,7 @@ type UserAttributes = {
   email: string;
   password: string;
   role: number;
+  disabled: number;
 };
 
 type UserCreationAttributes = Optional<UserAttributes, 'id'>;
@@ -20,6 +21,7 @@ class User extends Model<UserAttributes, UserCreationAttributes> {
   declare role: number;
   declare readonly createdAt: Date;
   declare readonly updatedAt: Date;
+  declare disabled: number;
 }
 
 export default (sequelize: Sequelize): TypeModel => {
@@ -47,6 +49,10 @@ export default (sequelize: Sequelize): TypeModel => {
       role: {
         type: DataTypes.JSON,
         defaultValue: '[1]',
+      },
+      disabled: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
       },
     },
     {

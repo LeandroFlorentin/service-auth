@@ -133,4 +133,138 @@ export default [
       },
     },
   },
+  {
+    path: '/users/delete',
+    object: {
+      delete: {
+        security: [
+          {
+            bearerAuth: [],
+          },
+        ],
+        tags: ['Users'],
+        responses: {
+          200: {
+            description: 'success',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    status: { type: 'number', example: 'number' },
+                    message: { type: 'string', example: 'string' },
+                    data: {
+                      type: 'object',
+                      properties: {
+                        id: { type: 'number' },
+                        username: { type: 'string' },
+                        email: { type: 'string' },
+                        role: {
+                          type: 'object',
+                          properties: {
+                            number: 'number',
+                          },
+                        },
+                        createdAt: { type: 'string' },
+                        updatedAt: { type: 'string' },
+                      },
+                    },
+                  },
+                  example: {
+                    status: 'number',
+                    message: 'string',
+                    data: {
+                      id: 'number',
+                      username: 'string',
+                      email: 'string',
+                      role: ['number'],
+                      createdAt: 'string',
+                      updatedAt: 'string',
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+  {
+    path: '/users/update',
+    object: {
+      put: {
+        security: [
+          {
+            bearerAuth: [],
+          },
+        ],
+        tags: ['Users'],
+        requestBody: {
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  username: {
+                    type: 'string',
+                    example: 'John doe2',
+                  },
+                  email: {
+                    type: 'string',
+                    example: 'JohnDoe@hotmail.com.ar',
+                  },
+                  password: {
+                    type: 'string',
+                    example: '123456',
+                  },
+                },
+                required: ['username', 'email', 'password'],
+              },
+            },
+          },
+        },
+        responses: {
+          200: {
+            description: 'success',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    status: { type: 'number', example: 'number' },
+                    message: { type: 'string', example: 'string' },
+                    data: {
+                      type: 'object',
+                      properties: {
+                        id: { type: 'number' },
+                        username: { type: 'string' },
+                        email: { type: 'string' },
+                        role: {
+                          type: 'object',
+                          properties: {
+                            number: 'number',
+                          },
+                        },
+                      },
+                    },
+                  },
+                  example: {
+                    status: 'number',
+                    message: 'string',
+                    data: {
+                      id: 'number',
+                      username: 'string',
+                      email: 'string',
+                      role: ['number'],
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  },
 ];

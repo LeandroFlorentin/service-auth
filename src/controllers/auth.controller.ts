@@ -20,7 +20,7 @@ class classAuthControllers {
     this.initializeControllers();
   }
 
-  private async login(req: RequestWhenLogin, res: Response, next: NextFunction) {
+  private login = async (req: RequestWhenLogin, res: Response, next: NextFunction) => {
     try {
       const model = Database.getModel('users');
       const user: any = await model.findOne({ where: { username: { [Orm.Op.iLike]: req.body.username } } });
@@ -36,7 +36,7 @@ class classAuthControllers {
     } catch (error: any) {
       next(error);
     }
-  }
+  };
 
   private initializeControllers(): void {
     this.controllers = [{ path: '/login', method: 'post', handler: this.login }];
