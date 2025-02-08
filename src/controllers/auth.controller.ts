@@ -16,6 +16,7 @@ class classAuthControllers {
   private controllers: IControllers[] = [];
 
   constructor() {
+    this.login = this.login.bind(this);
     this.initializeControllers();
   }
 

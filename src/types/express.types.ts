@@ -20,6 +20,10 @@ interface IUser {
   };
 }
 
+export interface Request extends RequestExpress, IUser {
+  body: {};
+}
+
 export interface RequestWhenAuth extends RequestExpress, IUser {
   headers: {
     authorization: string;
@@ -40,8 +44,6 @@ export interface RequestWithUser extends RequestExpress, IUser {
     role: number[];
   };
 }
-
-export type Request = RequestExpress;
 
 export type Response = ResponseExpress;
 

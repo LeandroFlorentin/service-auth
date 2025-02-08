@@ -76,4 +76,61 @@ export default [
       },
     },
   },
+  {
+    path: '/users/me',
+    object: {
+      get: {
+        security: [
+          {
+            bearerAuth: [],
+          },
+        ],
+        tags: ['Users'],
+        responses: {
+          200: {
+            description: 'success',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    status: { type: 'number', example: 'number' },
+                    message: { type: 'string', example: 'string' },
+                    data: {
+                      type: 'object',
+                      properties: {
+                        id: { type: 'number' },
+                        username: { type: 'string' },
+                        email: { type: 'string' },
+                        role: {
+                          type: 'object',
+                          properties: {
+                            number: 'number',
+                          },
+                        },
+                        createdAt: { type: 'string' },
+                        updatedAt: { type: 'string' },
+                      },
+                    },
+                  },
+                  example: {
+                    status: 'number',
+                    message: 'string',
+                    data: {
+                      id: 'number',
+                      username: 'string',
+                      email: 'string',
+                      role: ['number'],
+                      createdAt: 'string',
+                      updatedAt: 'string',
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  },
 ];
