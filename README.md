@@ -20,28 +20,16 @@
     <p>You can see possiblees dialects in <a href="https://sequelize.org/docs/v6/getting-started/">API Sequelize</a></p>
     <p>You'll need to setup a .env file at root directory with structure like this one:</p>
     <style>
-  pre {
-    background-color: black; /* Fondo negro */
-    padding: 10px;
-    color: white;
-    font-family: monospace;
-  }
-  .key {
-    color: violet; /* Color violeta para las claves */
-  }
-  .value {
-    color: yellow; /* Color amarillo para los valores */
-  }
 </style>
     <pre>
-      <span class="key">PORT</span> = <span class="value">&lt;YOUR_PORT&gt;</span>
-      <span class="key">DIALECT</span> = <span class="value">&lt;YOUR_DIALECT&gt;</span>
-      <span class="key">HOST</span> = <span class="value">&lt;YOUR_HOST_DATABASE&gt;</span>
-      <span class="key">USER</span> = <span class="value">&lt;YOUR_USERNAME_DATABASE&gt;</span>
-      <span class="key">PASSWORD</span> = <span class="value">&lt;YOUR_PASSWORD_DATABASE&gt;</span>
-      <span class="key">DATABASE</span> = <span class="value">&lt;YOUR_DATABASE&gt;</span>
-      <span class="key">JWT_SECRET</span> = <span class="value">&lt;YOUR_JWT_SECRET&gt;</span>
-      <span class="key">URL_GENERAL</span> = <span class="value">&lt;YOUR_DOMAIN&gt;</span> //Example: http://localhost:
+      <span>PORT</span> = <span>&lt;YOUR_PORT&gt;</span>
+      <span>DIALECT</span> = <span>&lt;YOUR_DIALECT&gt;</span>
+      <span>HOST</span> = <span>&lt;YOUR_HOST_DATABASE&gt;</span>
+      <span>USER</span> = <span>&lt;YOUR_USERNAME_DATABASE&gt;</span>
+      <span>PASSWORD</span> = <span>&lt;YOUR_PASSWORD_DATABASE&gt;</span>
+      <span>DATABASE</span> = <span>&lt;YOUR_DATABASE&gt;</span>
+      <span>JWT_SECRET</span> = <span>&lt;YOUR_JWT_SECRET&gt;</span>
+      <span>URL_GENERAL</span> = <span>&lt;YOUR_DOMAIN&gt;</span> //Example: http://localhost:
     </pre>
   </div>
 </div>
