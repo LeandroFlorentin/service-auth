@@ -14,5 +14,20 @@
     JWT_SECRET = secret
     URL_GENERAL = http://localhost:
   </pre>
-  <p>Endpoints in API:</p>
+  <p>API endpoints:</p>
+  <ul>
+    <li>Authentication
+      <ul>
+        <li>Login</li>
+      </ul>
+    </li>
+    <li>Users
+      <ul>
+        <li>Me</li>
+        <li>Create</li>
+        <li>Update</li>
+        <li>Delete</li>
+      </ul>
+    </li>
+  </ul>
 </div>
