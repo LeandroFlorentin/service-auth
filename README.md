@@ -1,18 +1,15 @@
 <div>
   <h1>Microservice Auth</h1>
-  <hr/>
   <h3>This project was developed in NodeJS using typescript. It is a service that manages users and permits perform basic operations in this users how login, get data user, create, modify, and delete users..</h3>
   <h1>Table of contents:</h1>
-  <hr/>
   <ul>
-    <li href="#installation">Installation</li>
+    <li><a href="#installation">Installation</a></li>
     <li>Authentication</li>
     <li>API Reference</li>
     <li>Authors</li>
   </ul>
   <div id="installation">
     <h1>Installation</h1>
-    <hr/>
     <h5>Clone the Repository</h5>
     <p>Begin by cloning the repo to a local directory. Usually the content is installed in a folder called api where you will find the source code for the API.</p>
     <h5>Install Dependencies</h5>
