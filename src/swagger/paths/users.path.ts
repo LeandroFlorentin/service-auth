@@ -8,6 +8,15 @@ export default [
             bearerAuth: [],
           },
         ],
+        parameters: [
+          {
+            name: 'id',
+            in: 'query',
+            required: true,
+            schema: { type: 'integer' },
+            example: 1,
+          },
+        ],
         tags: ['Users'],
         responses: {
           200: {
@@ -28,7 +37,7 @@ export default [
                         role: {
                           type: 'object',
                           properties: {
-                            number: 'number',
+                            number: 'string',
                           },
                         },
                         createdAt: { type: 'string' },
@@ -43,7 +52,7 @@ export default [
                       id: 'number',
                       username: 'string',
                       email: 'string',
-                      role: ['number'],
+                      role: ['string'],
                       createdAt: 'string',
                       updatedAt: 'string',
                     },
@@ -82,7 +91,7 @@ export default [
                   },
                   password: {
                     type: 'string',
-                    example: '123456',
+                    example: 'J123456',
                   },
                   role: {
                     type: 'array',
@@ -129,7 +138,7 @@ export default [
                       id: 'number',
                       username: 'string',
                       email: 'string',
-                      role: ['number'],
+                      role: ['string'],
                     },
                   },
                 },
@@ -175,7 +184,14 @@ export default [
                   },
                   password: {
                     type: 'string',
-                    example: '123456',
+                    example: 'J123456',
+                  },
+                  role: {
+                    type: 'array',
+                    items: {
+                      type: 'string',
+                      example: 'USER',
+                    },
                   },
                 },
                 required: ['username', 'email', 'password'],
@@ -190,33 +206,10 @@ export default [
               'application/json': {
                 schema: {
                   type: 'object',
-                  properties: {
-                    status: { type: 'number', example: 'number' },
-                    message: { type: 'string', example: 'string' },
-                    data: {
-                      type: 'object',
-                      properties: {
-                        id: { type: 'number' },
-                        username: { type: 'string' },
-                        email: { type: 'string' },
-                        role: {
-                          type: 'object',
-                          properties: {
-                            number: 'number',
-                          },
-                        },
-                      },
-                    },
-                  },
                   example: {
                     status: 'number',
                     message: 'string',
-                    data: {
-                      id: 'number',
-                      username: 'string',
-                      email: 'string',
-                      role: ['number'],
-                    },
+                    data: {},
                   },
                 },
               },
@@ -252,37 +245,10 @@ export default [
               'application/json': {
                 schema: {
                   type: 'object',
-                  properties: {
-                    status: { type: 'number', example: 'number' },
-                    message: { type: 'string', example: 'string' },
-                    data: {
-                      type: 'object',
-                      properties: {
-                        id: { type: 'number' },
-                        username: { type: 'string' },
-                        email: { type: 'string' },
-                        role: {
-                          type: 'object',
-                          properties: {
-                            number: 'number',
-                          },
-                        },
-                        createdAt: { type: 'string' },
-                        updatedAt: { type: 'string' },
-                      },
-                    },
-                  },
                   example: {
                     status: 'number',
                     message: 'string',
-                    data: {
-                      id: 'number',
-                      username: 'string',
-                      email: 'string',
-                      role: ['number'],
-                      createdAt: 'string',
-                      updatedAt: 'string',
-                    },
+                    data: {},
                   },
                 },
               },

@@ -22,7 +22,7 @@ export default [
                 required: ['username', 'password'],
                 example: {
                   username: 'John Doe',
-                  password: '123456',
+                  password: 'J123456',
                 },
               },
             },

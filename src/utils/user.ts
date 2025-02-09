@@ -6,7 +6,7 @@ class UserPrueba {
     const body = {
       username: 'John doe',
       email: 'JohnDoe@hotmail.com',
-      password: '123456',
+      password: 'J123456',
     };
     body.password = await hashPassword(body.password);
     const model = 'users';

@@ -45,7 +45,7 @@ class classUserController implements IClassUserController {
 
   private getUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { id } = req.user!;
+      const { id } = req.query;
       const UserModel = Database.getModel(this.model);
       if (!UserModel) return res.status(500).json(responseStructure(500, 'Model not found', { model: this.model }));
       const user = await UserModel.findOne({ where: { id, disabled: 0 } });
@@ -66,7 +66,7 @@ class classUserController implements IClassUserController {
       const UserModel = Database.getModel(this.model);
       if (!UserModel) return res.status(500).json(responseStructure(500, 'Model not found', { model: this.model }));
       const userDeleted = await UserModel.update({ disabled: 1, updatedAt: getDate() }, { where: { id } });
-      return res.status(200).json(responseStructure(200, 'Succesfully delete user', { ...userDeleted }));
+      return res.status(200).json(responseStructure(200, 'Succesfully delete user', {}));
     } catch (error) {
       next(error);
     }
@@ -79,7 +79,7 @@ class classUserController implements IClassUserController {
       const UserModel = Database.getModel(this.model);
       if (!UserModel) return res.status(500).json(responseStructure(500, 'Model not found', { model: this.model }));
       const updatedUser = await UserModel.update({ ...req.body, updatedAt: getDate() }, { where: { id } });
-      return res.status(200).json(responseStructure(200, 'Succesfully upload user', { ...updatedUser }));
+      return res.status(200).json(responseStructure(200, 'Succesfully upload user', {}));
     } catch (error) {
       next(error);
     }
@@ -87,7 +87,7 @@ class classUserController implements IClassUserController {
 
   private initializeControllers(): void {
     this.controllers = [
-      { method: 'get', path: '/me', handler: this.getUser, middlewares: [...this.middlewares] },
+      { method: 'get', path: '/me', handler: this.getUser, middlewares: [...this.middlewares, middlewareVerifyRoleUpdated] },
       { method: 'post', path: '/create', handler: this.createUser, middlewares: [...this.middlewares, middlewareRoleAdmin] },
       { method: 'delete', path: '/delete', handler: this.disabledUser, middlewares: [...this.middlewares, middlewareRoleAdmin] },
       { method: 'put', path: '/update', handler: this.updateUser, middlewares: [...this.middlewares, middlewareVerifyRoleUpdated] },
