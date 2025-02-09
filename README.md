@@ -20,6 +20,7 @@
     <p>You can see possiblees dialects in <a href="https://sequelize.org/docs/v6/getting-started/">API Sequelize</a></p>
     <p>You'll need to setup a .env file at root directory with structure like this one:</p>
 ```
+<pre>
 PORT        = &lt;YOUR_PORT&gt;
 
 DIALECT = &lt;YOUR_DIALECT&gt;
@@ -32,6 +33,8 @@ JWT_SECRET = &lt;YOUR_JWT_SECRET&gt;
 
 URL_GENERAL = &lt;YOUR_DOMAIN&gt; //Example: http://localhost:
 
+</pre>
+```
   </div>
   <div id="#authentication">
     <h1>Authentication</h1>
