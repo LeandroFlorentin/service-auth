@@ -2,7 +2,11 @@ import { Router } from 'express';
 import UserRoutes from './users.routes';
 import AuthRoutes from './auth.routes';
 
-class Routes {
+interface IRoutes {
+  getRoutes(): Router;
+}
+
+class Routes implements IRoutes {
   private router: Router = Router();
   private userRoutes = new UserRoutes();
   private authRoutes = new AuthRoutes();

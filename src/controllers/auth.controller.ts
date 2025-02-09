@@ -5,6 +5,10 @@ import { getToken } from '../utils/jwt';
 import { comparePassword } from '../utils/bcrypt';
 import { responseStructure } from '../utils/response';
 
+interface IClassAuthController {
+  getControllers(): IControllers[];
+}
+
 interface IControllers {
   path: string;
   handler: (req: RequestWhenLogin, res: Response, next: NextFunction) => void;
@@ -12,7 +16,7 @@ interface IControllers {
   middlewares?: ((req: any, res: Response, next: NextFunction) => void)[];
 }
 
-class classAuthControllers {
+class classAuthControllers implements IClassAuthController {
   private controllers: IControllers[] = [];
 
   constructor() {
@@ -31,6 +35,7 @@ class classAuthControllers {
       delete dataUser.password;
       delete dataUser.createdAt;
       delete dataUser.updatedAt;
+      dataUser.role = JSON.parse(dataUser.role);
       const token = getToken(dataUser);
       return res.status(200).json(responseStructure(200, 'Succesfull Auth', { ...dataUser, access_token: token }));
     } catch (error: any) {
@@ -42,7 +47,7 @@ class classAuthControllers {
     this.controllers = [{ path: '/login', method: 'post', handler: this.login }];
   }
 
-  public getControlllers() {
+  public getControllers() {
     return this.controllers;
   }
 }

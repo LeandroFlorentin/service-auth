@@ -1,82 +1,5 @@
 export default [
   {
-    path: '/users/create',
-    object: {
-      post: {
-        security: [
-          {
-            bearerAuth: [],
-          },
-        ],
-        tags: ['Users'],
-        requestBody: {
-          content: {
-            'application/json': {
-              schema: {
-                type: 'object',
-                properties: {
-                  username: {
-                    type: 'string',
-                    example: 'John doe2',
-                  },
-                  email: {
-                    type: 'string',
-                    example: 'JohnDoe@hotmail.com.ar',
-                  },
-                  password: {
-                    type: 'string',
-                    example: '123456',
-                  },
-                },
-                required: ['username', 'email', 'password'],
-              },
-            },
-          },
-        },
-        responses: {
-          200: {
-            description: 'success',
-            content: {
-              'application/json': {
-                schema: {
-                  type: 'object',
-                  properties: {
-                    status: { type: 'number', example: 'number' },
-                    message: { type: 'string', example: 'string' },
-                    data: {
-                      type: 'object',
-                      properties: {
-                        id: { type: 'number' },
-                        username: { type: 'string' },
-                        email: { type: 'string' },
-                        role: {
-                          type: 'object',
-                          properties: {
-                            number: 'number',
-                          },
-                        },
-                      },
-                    },
-                  },
-                  example: {
-                    status: 'number',
-                    message: 'string',
-                    data: {
-                      id: 'number',
-                      username: 'string',
-                      email: 'string',
-                      role: ['number'],
-                    },
-                  },
-                },
-              },
-            },
-          },
-        },
-      },
-    },
-  },
-  {
     path: '/users/me',
     object: {
       get: {
@@ -134,15 +57,46 @@ export default [
     },
   },
   {
-    path: '/users/delete',
+    path: '/users/create',
     object: {
-      delete: {
+      post: {
         security: [
           {
             bearerAuth: [],
           },
         ],
         tags: ['Users'],
+        requestBody: {
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  username: {
+                    type: 'string',
+                    example: 'John doe2',
+                  },
+                  email: {
+                    type: 'string',
+                    example: 'JohnDoe@hotmail.com.ar',
+                  },
+                  password: {
+                    type: 'string',
+                    example: '123456',
+                  },
+                  role: {
+                    type: 'array',
+                    items: {
+                      type: 'string',
+                    },
+                    example: ['USER'],
+                  },
+                },
+                required: ['username', 'email', 'password'],
+              },
+            },
+          },
+        },
         responses: {
           200: {
             description: 'success',
@@ -165,8 +119,6 @@ export default [
                             number: 'number',
                           },
                         },
-                        createdAt: { type: 'string' },
-                        updatedAt: { type: 'string' },
                       },
                     },
                   },
@@ -178,8 +130,6 @@ export default [
                       username: 'string',
                       email: 'string',
                       role: ['number'],
-                      createdAt: 'string',
-                      updatedAt: 'string',
                     },
                   },
                 },
@@ -197,6 +147,15 @@ export default [
         security: [
           {
             bearerAuth: [],
+          },
+        ],
+        parameters: [
+          {
+            name: 'id',
+            in: 'query',
+            required: true,
+            schema: { type: 'integer' },
+            example: 1,
           },
         ],
         tags: ['Users'],
@@ -257,6 +216,72 @@ export default [
                       username: 'string',
                       email: 'string',
                       role: ['number'],
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+  {
+    path: '/users/delete',
+    object: {
+      delete: {
+        security: [
+          {
+            bearerAuth: [],
+          },
+        ],
+        tags: ['Users'],
+        parameters: [
+          {
+            name: 'id',
+            in: 'query',
+            required: true,
+            schema: { type: 'integer' },
+            example: 1,
+          },
+        ],
+        responses: {
+          200: {
+            description: 'success',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: {
+                    status: { type: 'number', example: 'number' },
+                    message: { type: 'string', example: 'string' },
+                    data: {
+                      type: 'object',
+                      properties: {
+                        id: { type: 'number' },
+                        username: { type: 'string' },
+                        email: { type: 'string' },
+                        role: {
+                          type: 'object',
+                          properties: {
+                            number: 'number',
+                          },
+                        },
+                        createdAt: { type: 'string' },
+                        updatedAt: { type: 'string' },
+                      },
+                    },
+                  },
+                  example: {
+                    status: 'number',
+                    message: 'string',
+                    data: {
+                      id: 'number',
+                      username: 'string',
+                      email: 'string',
+                      role: ['number'],
+                      createdAt: 'string',
+                      updatedAt: 'string',
                     },
                   },
                 },

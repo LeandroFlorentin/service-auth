@@ -41,7 +41,7 @@ export interface RequestWithUser extends RequestExpress, IUser {
     username: string;
     email: string;
     password: string;
-    role: number[];
+    role: string[];
   };
 }
 

@@ -1,7 +1,11 @@
 import classUserController from '../controllers/users.controller';
 import { Router } from 'express';
 
-class RouteUsers {
+interface IRouteUsers {
+  getRoutes(): Router;
+}
+
+class RouteUsers implements IRouteUsers {
   private router: Router = Router();
   private controllers = new classUserController().getControllers();
 

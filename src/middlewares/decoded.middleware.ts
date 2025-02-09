@@ -10,6 +10,7 @@ export function middlewareDecoded(req: RequestWhenAuth, res: Response, next: Nex
     const bearerToken = getBearerToken(authHeader);
     verifyToken(bearerToken);
     const decoded = decodedToken(bearerToken);
+    decoded.data.role = JSON.parse(decoded.data.role);
     req.user = decoded.data;
     next();
   } catch (error: any) {

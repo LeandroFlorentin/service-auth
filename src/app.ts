@@ -8,7 +8,12 @@ import { middlewareError } from './middlewares/error.middleware';
 import UserPrueba from './utils/user';
 import swagger from './swagger/swagger';
 
-class App {
+interface IApp {
+  listen(port: number): void;
+  connectDatabase(): Promise<TypeSequelize>;
+}
+
+class App implements IApp {
   private app: Application;
   constructor() {
     this.app = express();

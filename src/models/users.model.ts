@@ -48,7 +48,7 @@ export default (sequelize: Sequelize): TypeModel => {
       },
       role: {
         type: DataTypes.JSON,
-        defaultValue: '[1]',
+        defaultValue: JSON.stringify(['ADMIN']),
       },
       disabled: {
         type: DataTypes.INTEGER,

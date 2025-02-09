@@ -3,7 +3,12 @@ import { RequestWithUser, Response, NextFunction, Request } from '../types/expre
 import { responseStructure } from '../utils/response';
 import Database from '../db';
 import { middlewareDecoded } from '../middlewares/decoded.middleware';
+import { middlewareRoleAdmin, middlewareVerifyRoleUpdated } from '../middlewares/roles.middleware';
 import { getDate } from '../utils/moment';
+
+interface IClassUserController {
+  getControllers(): IControllers[];
+}
 
 interface IControllers {
   path: string;
@@ -12,7 +17,7 @@ interface IControllers {
   middlewares?: ((req: any, res: Response, next: NextFunction) => void)[];
 }
 
-class classUserController {
+class classUserController implements IClassUserController {
   private middlewares = [middlewareDecoded];
   private model: string = 'users';
   private controllers: IControllers[] = [];
@@ -56,7 +61,8 @@ class classUserController {
 
   private disabledUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { id } = req.user!;
+      const { id } = req.query;
+      if (!id) return res.status(404).json(responseStructure(404, 'Id not send in query params', {}));
       const UserModel = Database.getModel(this.model);
       if (!UserModel) return res.status(500).json(responseStructure(500, 'Model not found', { model: this.model }));
       const userDeleted = await UserModel.update({ disabled: 1, updatedAt: getDate() }, { where: { id } });
@@ -68,7 +74,8 @@ class classUserController {
 
   private updateUser = async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
-      const { id } = req.user!;
+      const { id } = req.query;
+      if (!id) return res.status(404).json(responseStructure(404, 'Id not send in query params', {}));
       const UserModel = Database.getModel(this.model);
       if (!UserModel) return res.status(500).json(responseStructure(500, 'Model not found', { model: this.model }));
       const updatedUser = await UserModel.update({ ...req.body, updatedAt: getDate() }, { where: { id } });
@@ -81,9 +88,9 @@ class classUserController {
   private initializeControllers(): void {
     this.controllers = [
       { method: 'get', path: '/me', handler: this.getUser, middlewares: [...this.middlewares] },
-      { method: 'post', path: '/create', handler: this.createUser, middlewares: [...this.middlewares] },
-      { method: 'delete', path: '/delete', handler: this.disabledUser, middlewares: [...this.middlewares] },
-      { method: 'put', path: '/update', handler: this.updateUser, middlewares: [...this.middlewares] },
+      { method: 'post', path: '/create', handler: this.createUser, middlewares: [...this.middlewares, middlewareRoleAdmin] },
+      { method: 'delete', path: '/delete', handler: this.disabledUser, middlewares: [...this.middlewares, middlewareRoleAdmin] },
+      { method: 'put', path: '/update', handler: this.updateUser, middlewares: [...this.middlewares, middlewareVerifyRoleUpdated] },
     ];
   }
   public getControllers(): IControllers[] {

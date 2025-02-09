@@ -1,9 +1,13 @@
 import { Router } from 'express';
 import classAuthController from '../controllers/auth.controller';
 
-class RoutesAuth {
+interface IRoutesAuth {
+  getRoutes(): Router;
+}
+
+class RoutesAuth implements IRoutesAuth {
   private router: Router = Router();
-  private controllers = new classAuthController().getControlllers();
+  private controllers = new classAuthController().getControllers();
 
   public getRoutes(): Router {
     this.controllers.forEach((route) => {
