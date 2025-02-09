@@ -7,7 +7,7 @@ This project was developed in NodeJS using typescript. It is a service that mana
 - [Installation](#installation)
 - [Authentication](#authentication)
 - [API Reference](#api-reference)
-- Authors
+- [Authors](#authors)
 
 # Installation
 
@@ -149,8 +149,8 @@ You will get a response like this:
 - [Users Endpoints](#users-endpoints)
   - [GET Me](#me)
   - [POST Create](#create)
-  - [UPDATE Update](#update-user)
-  - [DELETE Delete](#delete-user)
+  - [UPDATE Update](#update)
+  - [DELETE Delete](#delete)
 
 ## Error handling
 
@@ -332,3 +332,7 @@ This is the main method to login, which is used to get the **accessToken**. You 
   "data": {}
 }
 ```
+
+# Authors
+
+[@LeandroFlorentin](https://www.linkedin.com/in/leandro-florentin/)
