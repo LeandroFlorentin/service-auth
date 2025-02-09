@@ -19,18 +19,23 @@
     <p>This Api is working with Sequelize, the DIALECT in the .env determines which database to use</p>
     <p>You can see possiblees dialects in <a href="https://sequelize.org/docs/v6/getting-started/">API Sequelize</a></p>
     <p>You'll need to setup a .env file at root directory with structure like this one:</p>
-    <pre>
-<span style="color:yellow">PORT</span> = <span>&lt;YOUR_PORT&gt;</span>
-<span style="color:yellow">DIALECT</span> = <span>&lt;YOUR_DIALECT&gt;</span>
-<span style="color:yellow">HOST</span> = <span>&lt;YOUR_HOST_DATABASE&gt;</span>
-<span style="color:yellow">USER</span> = <span>&lt;YOUR_USERNAME_DATABASE&gt;</span>
-<span style="color:yellow">PASSWORD</span> = <span>&lt;YOUR_PASSWORD_DATABASE&gt;</span>
-<span style="color:yellow">DATABASE</span> = <span>&lt;YOUR_DATABASE&gt;</span>
-<span style="color:yellow">JWT_SECRET</span> = <span>&lt;YOUR_JWT_SECRET&gt;</span>
-<span style="color:yellow">URL_GENERAL</span> = <span>&lt;YOUR_DOMAIN&gt;</span> //Example: http://localhost:
-    </pre>
+```
+PORT        = &lt;YOUR_PORT&gt;
+
+DIALECT = &lt;YOUR_DIALECT&gt;
+HOST = &lt;YOUR_HOST_DATABASE&gt;
+USER = &lt;YOUR_USERNAME_DATABASE&gt;
+PASSWORD = &lt;YOUR_PASSWORD_DATABASE&gt;
+DATABASE = &lt;YOUR_DATABASE&gt;
+
+JWT_SECRET = &lt;YOUR_JWT_SECRET&gt;
+
+URL_GENERAL = &lt;YOUR_DOMAIN&gt; //Example: http://localhost:
+
   </div>
   <div id="#authentication">
-
+    <h1>Authentication</h1>
+    <p>When you initialization app in this create a test user whose username John doe, and your password is 123456.</p>
+    <p>You use this user for login and get token</p>
   </div>
 </div>
