@@ -19,15 +19,29 @@
     <p>This Api is working with Sequelize, the DIALECT in the .env determines which database to use</p>
     <p>You can see possiblees dialects in <a href="https://sequelize.org/docs/v6/getting-started/">API Sequelize</a></p>
     <p>You'll need to setup a .env file at root directory with structure like this one:</p>
+    <style>
+  pre {
+    background-color: black; /* Fondo negro */
+    padding: 10px;
+    color: white;
+    font-family: monospace;
+  }
+  .key {
+    color: violet; /* Color violeta para las claves */
+  }
+  .value {
+    color: yellow; /* Color amarillo para los valores */
+  }
+</style>
     <pre>
-        PORT = '<YOUR_PORT>'
-        DIALECT = '<YOUR_DIALECT>'
-        HOST = '<YOUR_HOST_DATABASE>'
-        USER = '<YOUR_USERNAME_DATABASE>'
-        PASSWORD = '<YOUR_PASSWORD_DATABASE>'
-        DATABASE = '<YOUR_DATABASE>'
-        JWT_SECRET = '<YOUR_JWT_SECRET>'
-        URL_GENERAL = '<YOUR_DOMAIN>' //Example: http://localhost:
+      <span class="key">PORT</span> = <span class="value">&lt;YOUR_PORT&gt;</span>
+      <span class="key">DIALECT</span> = <span class="value">&lt;YOUR_DIALECT&gt;</span>
+      <span class="key">HOST</span> = <span class="value">&lt;YOUR_HOST_DATABASE&gt;</span>
+      <span class="key">USER</span> = <span class="value">&lt;YOUR_USERNAME_DATABASE&gt;</span>
+      <span class="key">PASSWORD</span> = <span class="value">&lt;YOUR_PASSWORD_DATABASE&gt;</span>
+      <span class="key">DATABASE</span> = <span class="value">&lt;YOUR_DATABASE&gt;</span>
+      <span class="key">JWT_SECRET</span> = <span class="value">&lt;YOUR_JWT_SECRET&gt;</span>
+      <span class="key">URL_GENERAL</span> = <span class="value">&lt;YOUR_DOMAIN&gt;</span> //Example: http://localhost:
     </pre>
   </div>
 </div>
