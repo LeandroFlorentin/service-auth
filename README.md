@@ -4,9 +4,9 @@
   <h1>Table of contents:</h1>
   <ul>
     <li><a href="#installation">Installation</a></li>
-    <li>Authentication</li>
-    <li>API Reference</li>
-    <li>Authors</li>
+    <li><a>Authentication</a></li>
+    <li><a>API Reference</a></li>
+    <li><a>Authors</a></li>
   </ul>
   <div id="installation">
     <h1>Installation</h1>
@@ -20,14 +20,14 @@
     <p>You can see possiblees dialects in <a href="https://sequelize.org/docs/v6/getting-started/">API Sequelize</a></p>
     <p>You'll need to setup a .env file at root directory with structure like this one:</p>
     <pre>
-        PORT = <YOUR_PORT>
-        DIALECT = <YOUR_DIALECT>
-        HOST = <YOUR_HOST_DATABASE>
-        USER = <YOUR_USERNAME_DATABASE>
-        PASSWORD = <YOUR_PASSWORD_DATABASE>
-        DATABASE = <YOUR_DATABASE>
-        JWT_SECRET = <YOUR_JWT_SECRET>
-        URL_GENERAL = <YOUR_DOMAIN> //Example: http://localhost:
+        PORT = '<YOUR_PORT>'
+        DIALECT = '<YOUR_DIALECT>'
+        HOST = '<YOUR_HOST_DATABASE>'
+        USER = '<YOUR_USERNAME_DATABASE>'
+        PASSWORD = '<YOUR_PASSWORD_DATABASE>'
+        DATABASE = '<YOUR_DATABASE>'
+        JWT_SECRET = '<YOUR_JWT_SECRET>'
+        URL_GENERAL = '<YOUR_DOMAIN>' //Example: http://localhost:
     </pre>
   </div>
 </div>
