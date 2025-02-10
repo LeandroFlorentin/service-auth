@@ -4,6 +4,7 @@ import Database from '../db';
 import { getToken } from '../utils/jwt';
 import { comparePassword } from '../utils/bcrypt';
 import { responseStructure } from '../utils/response';
+import { verifyEmail } from '../utils/functions';
 
 interface IClassAuthController {
   getControllers(): IControllers[];
@@ -26,9 +27,17 @@ class classAuthControllers implements IClassAuthController {
 
   private login = async (req: RequestWhenLogin, res: Response, next: NextFunction) => {
     try {
+      const obj: any = {};
+      for (let key in req.body) {
+        if (key !== 'password') {
+          if (verifyEmail(req.body[key])) obj.email = { [Orm.Op.iLike]: req.body[key] };
+          else obj[key] = { [Orm.Op.iLike]: req.body[key] };
+        }
+      }
+      console.log('JSON', JSON.stringify(obj));
       const model = Database.getModel('users');
-      const user: any = await model.findOne({ where: { username: { [Orm.Op.iLike]: req.body.username } } });
-      if (!user) return res.status(404).json(responseStructure(404, `Username incorrect`, {}));
+      const user: any = await model.findOne({ where: { ...obj } });
+      if (!user) return res.status(404).json(responseStructure(404, `Email or username incorrect`, {}));
       const isPasswordValid = await comparePassword(req.body.password, user.password);
       if (!isPasswordValid) return res.status(404).json(responseStructure(404, `Password incorrect`, {}));
       const dataUser = user.dataValues;

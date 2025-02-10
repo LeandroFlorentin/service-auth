@@ -5,6 +5,7 @@ import Database from '../db';
 import { middlewareDecoded } from '../middlewares/decoded.middleware';
 import { middlewareRoleAdmin, middlewareVerifyRoleUpdated } from '../middlewares/roles.middleware';
 import { getDate } from '../utils/moment';
+import { verifyEmail, verifyPassword } from '../utils/functions';
 
 interface IClassUserController {
   getControllers(): IControllers[];
@@ -30,6 +31,16 @@ class classUserController implements IClassUserController {
     try {
       const UserModel = Database.getModel(this.model);
       if (!UserModel) return res.status(500).json(responseStructure(500, 'Model not found', { model: this.model }));
+      const emailVerify = verifyEmail(req.body.email);
+      if (!emailVerify) return res.status(400).json(responseStructure(400, 'Format email Invalid', { email: req.body.email }));
+      const passwordVerify = verifyPassword(req.body.password);
+      if (!passwordVerify) {
+        return res.status(400).json(
+          responseStructure(400, 'The password contains one letter, and one number and your longitude should 5 - 30 characters.', {
+            password: req.body.password,
+          })
+        );
+      }
       req.body.password = req.body.password && (await hashPassword(req.body?.password));
       const user: any = await UserModel.create({ ...req.body, role: JSON.stringify(req.body.role) });
       const { dataValues: values } = user;
@@ -65,7 +76,7 @@ class classUserController implements IClassUserController {
       if (!id) return res.status(404).json(responseStructure(404, 'Id not send in query params', {}));
       const UserModel = Database.getModel(this.model);
       if (!UserModel) return res.status(500).json(responseStructure(500, 'Model not found', { model: this.model }));
-      const userDeleted = await UserModel.update({ disabled: 1, updatedAt: getDate() }, { where: { id } });
+      await UserModel.update({ disabled: 1, updatedAt: getDate() }, { where: { id } });
       return res.status(200).json(responseStructure(200, 'Succesfully delete user', {}));
     } catch (error) {
       next(error);

@@ -34,6 +34,7 @@ export interface RequestWhenLogin extends RequestExpress {
   body: {
     username: string;
     password: string;
+    [key: string]: any;
   };
 }
 export interface RequestWithUser extends RequestExpress, IUser {
