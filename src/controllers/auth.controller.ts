@@ -34,7 +34,6 @@ class classAuthControllers implements IClassAuthController {
           else obj[key] = { [Orm.Op.iLike]: req.body[key] };
         }
       }
-      console.log('JSON', JSON.stringify(obj));
       const model = Database.getModel('users');
       const user: any = await model.findOne({ where: { ...obj } });
       if (!user) return res.status(404).json(responseStructure(404, `Email or username incorrect`, {}));

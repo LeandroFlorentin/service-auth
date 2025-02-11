@@ -6,6 +6,7 @@ import { middlewareDecoded } from '../middlewares/decoded.middleware';
 import { middlewareRoleAdmin, middlewareVerifyRoleUpdated } from '../middlewares/roles.middleware';
 import { getDate } from '../utils/moment';
 import { verifyEmail, verifyPassword } from '../utils/functions';
+import Orm from '../utils/sequelize';
 
 interface IClassUserController {
   getControllers(): IControllers[];
@@ -24,11 +25,16 @@ class classUserController implements IClassUserController {
   private controllers: IControllers[] = [];
 
   constructor() {
+    this.createUser = this.createUser.bind(this);
+    this.disabledUser = this.disabledUser.bind(this);
+    this.getUser = this.getUser.bind(this);
+    this.updateUser = this.updateUser.bind(this);
     this.initializeControllers();
   }
 
   private createUser = async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
+      const { id } = req.user!;
       const UserModel = Database.getModel(this.model);
       if (!UserModel) return res.status(500).json(responseStructure(500, 'Model not found', { model: this.model }));
       const emailVerify = verifyEmail(req.body.email);
@@ -42,6 +48,13 @@ class classUserController implements IClassUserController {
         );
       }
       req.body.password = req.body.password && (await hashPassword(req.body?.password));
+      /*       const existUser = await UserModel.findOne({ where: { email: { [Orm.Op.iLike]: req.body.email }, disabled: 1 } });
+      if (existUser) {
+        let body: any = { ...req.body };
+        await UserModel.update({ ...body, updatedAt: getDate(), disabled: 0 }, { where: { id } });
+        delete body.password;
+        return res.status(200).json(responseStructure(200, `User ${req.body.username} is succesfull created`, { id, ...body }));
+      } */
       const user: any = await UserModel.create({ ...req.body, role: JSON.stringify(req.body.role) });
       const { dataValues: values } = user;
       delete values.password;
@@ -89,7 +102,7 @@ class classUserController implements IClassUserController {
       if (!id) return res.status(404).json(responseStructure(404, 'Id not send in query params', {}));
       const UserModel = Database.getModel(this.model);
       if (!UserModel) return res.status(500).json(responseStructure(500, 'Model not found', { model: this.model }));
-      const updatedUser = await UserModel.update({ ...req.body, updatedAt: getDate() }, { where: { id } });
+      await UserModel.update({ ...req.body, updatedAt: getDate() }, { where: { id } });
       return res.status(200).json(responseStructure(200, 'Succesfully upload user', {}));
     } catch (error) {
       next(error);
