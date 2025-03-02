@@ -282,6 +282,8 @@ This is the main method to login, which is used to get the **accessToken**. You 
 + Allowed user types USER and ADMIN. type USER modification only in your user.
 ```
 
+Users are of type USER; they can only modify their own user.
+
 **Query params**
 
 | Parameter | Type     | Description                                |
@@ -316,6 +318,8 @@ This is the main method to login, which is used to get the **accessToken**. You 
 + Authentication is required
 + Allowed user types USER and ADMIN. type USER delete only in your user.
 ```
+
+Users are of type USER; they can only delete their own user.
 
 **Query params**
 
