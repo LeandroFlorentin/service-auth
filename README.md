@@ -204,7 +204,7 @@ This is the main method to login, which is used to get the **accessToken**. You 
 
 ## Users endpoints
 
-#### Me
+### Me
 
 ```diff
 + Authentication is required
@@ -239,7 +239,7 @@ This is the main method to login, which is used to get the **accessToken**. You 
 }
 ```
 
-#### Create
+### Create
 
 ```diff
 + Authentication is required
@@ -275,7 +275,7 @@ This is the main method to login, which is used to get the **accessToken**. You 
 }
 ```
 
-#### Update
+### Update
 
 ```diff
 + Authentication is required
