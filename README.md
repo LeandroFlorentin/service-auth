@@ -284,6 +284,10 @@ This is the main method to login, which is used to get the **accessToken**. You 
 
 Users are of type USER; they can only modify their own user.
 
+```http
+  UPDATE users/update
+```
+
 **Query params**
 
 | Parameter | Type     | Description                                |
@@ -320,6 +324,10 @@ Users are of type USER; they can only modify their own user.
 ```
 
 Users are of type USER; they can only delete their own user.
+
+```http
+  DELETE users/delete
+```
 
 **Query params**
 
