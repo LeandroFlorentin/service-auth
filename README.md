@@ -59,10 +59,10 @@ At [API Reference](#api-reference) you will find that authentication will appear
 
 **Body params**
 
-| Parameter           | Type     | Description                                            |
-| :------------------ | :------- | :----------------------------------------------------- |
-| `username or email` | `string` | **Required**. A valid username or email                |
-| `password`          | `string` | **Required**. At least have a number and a letter 5-30 |
+| Parameter  | Type     | Description                                            |
+| :--------- | :------- | :----------------------------------------------------- |
+| `username` | `string` | **Required**. A valid username or email                |
+| `password` | `string` | **Required**. At least have a number and a letter 5-30 |
 
 You will get a response like this:
 
@@ -180,10 +180,10 @@ This is the main method to login, which is used to get the **accessToken**. You 
 
 **Body params**
 
-| Parameter           | Type     | Description                                            |
-| :------------------ | :------- | :----------------------------------------------------- |
-| `username or email` | `string` | **Required**. A valid username or email                |
-| `password`          | `string` | **Required**. At least have a number and a letter 5-30 |
+| Parameter  | Type     | Description                                            |
+| :--------- | :------- | :----------------------------------------------------- |
+| `username` | `string` | **Required**. A valid username or email                |
+| `password` | `string` | **Required**. At least have a number and a letter 5-30 |
 
 **200 Response**
 

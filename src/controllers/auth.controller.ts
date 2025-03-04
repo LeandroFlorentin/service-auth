@@ -27,6 +27,9 @@ class classAuthControllers implements IClassAuthController {
 
   private login = async (req: RequestWhenLogin, res: Response, next: NextFunction) => {
     try {
+      console.log('BODY', req.body);
+      if (!req.body.username) return res.status(400).json(responseStructure(400, 'Please enter a username', {}));
+      if (!req.body.password) return res.status(400).json(responseStructure(400, 'Please enter a password', {}));
       const obj: any = {};
       for (let key in req.body) {
         if (key !== 'password') {
@@ -47,6 +50,7 @@ class classAuthControllers implements IClassAuthController {
       const token = getToken(dataUser);
       return res.status(200).json(responseStructure(200, 'Succesfull Auth', { ...dataUser, access_token: token }));
     } catch (error: any) {
+      console.log('Error: ', error);
       next(error);
     }
   };
