@@ -120,8 +120,8 @@ You set token in Authorization bearer token.
 
 | Parameter  | Type        | Description                                            |
 | :--------- | :---------- | :----------------------------------------------------- |
-| `username` | `string`    | **Required**. A valid username or email                |
-| `email`    | `string`    | **Required**.                                          |
+| `username` | `string`    | **Required**. A valid username                         |
+| `email`    | `string`    | **Required**. A valid email                            |
 | `password` | `string`    | **Required**. At least have a number and a letter 5-30 |
 | `role`     | `string []` | Default value is ["USER"]                              |
 
@@ -254,8 +254,8 @@ This is the main method to login, which is used to get the **accessToken**. You 
 
 | Parameter  | Type        | Description                                            |
 | :--------- | :---------- | :----------------------------------------------------- |
-| `username` | `string`    | **Required**. A valid username or email                |
-| `email`    | `string`    | **Required**.                                          |
+| `username` | `string`    | **Required**. A valid username                         |
+| `email`    | `string`    | **Required**. A valid email                            |
 | `password` | `string`    | **Required**. At least have a number and a letter 5-30 |
 | `role`     | `string []` | Default value is ["USER"]                              |
 
