@@ -1,5 +1,4 @@
 import { Sequelize, Dialect, Op as OpSequelize } from 'sequelize';
-import { TypeOp } from '../types/sequelize.types';
 const { DATABASE, USER, PASSWORD, HOST, DIALECT } = process.env;
 const dialect = DIALECT as Dialect | undefined;
 
@@ -7,6 +6,12 @@ class Orm {
   private static instance: Sequelize;
 
   public static async getInstance(): Promise<Sequelize> {
+    console.log('params', {
+      DATABASE,
+      USER,
+      PASSWORD,
+      HOST,
+    });
     try {
       if (!Orm.instance) {
         if (!DIALECT || !['mysql', 'postgres', 'sqlite', 'mariadb', 'mssql', 'db2', 'snowflake', 'oracle'].includes(DIALECT)) {
@@ -22,8 +27,9 @@ class Orm {
       await Orm.instance.authenticate();
 
       console.log('Connection has been established successfully.');
-    } catch (error) {
+    } catch (error: any) {
       console.error('Unable to connect to the database:', error);
+      throw new Error(error);
     }
     return Orm.instance;
   }
