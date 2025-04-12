@@ -45,7 +45,7 @@ class classAuthControllers implements IClassAuthController {
       delete dataUser.password;
       delete dataUser.createdAt;
       delete dataUser.updatedAt;
-      dataUser.role = JSON.parse(dataUser.role);
+      if(typeof dataUser.role === "string") dataUser.role = JSON.parse(dataUser.role);
       const token = getToken(dataUser);
       return res.status(200).json(responseStructure(200, 'Succesfull Auth', { ...dataUser, access_token: token }));
     } catch (error: any) {
