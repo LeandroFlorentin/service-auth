@@ -5,6 +5,7 @@ import { getToken } from '../utils/jwt';
 import { comparePassword } from '../utils/bcrypt';
 import { responseStructure } from '../utils/response';
 import { verifyEmail } from '../utils/functions';
+import CustomError from '../utils/customError';
 
 interface IClassAuthController {
   getControllers(): IControllers[];
@@ -27,8 +28,8 @@ class classAuthControllers implements IClassAuthController {
 
   private login = async (req: RequestWhenLogin, res: Response, next: NextFunction) => {
     try {
-      if (!req.body.username) return res.status(400).json(responseStructure(400, 'Please enter a username', {}));
-      if (!req.body.password) return res.status(400).json(responseStructure(400, 'Please enter a password', {}));
+      if (!req.body.username) throw new CustomError('Please enter a username', 400);
+      if (!req.body.password) throw new CustomError('Please enter a password', 400)
       const obj: any = {};
       for (let key in req.body) {
         if (key !== 'password') {
@@ -38,9 +39,9 @@ class classAuthControllers implements IClassAuthController {
       }
       const model = Database.getModel('users');
       const user: any = await model.findOne({ where: { ...obj } });
-      if (!user) return res.status(404).json(responseStructure(404, `Email or username incorrect`, {}));
+      if (!user) throw new CustomError('Email or username incorrect', 404);
       const isPasswordValid = await comparePassword(req.body.password, user.password);
-      if (!isPasswordValid) return res.status(404).json(responseStructure(404, `Password incorrect`, {}));
+      if (!isPasswordValid) throw new CustomError('Password incorrect', 404);
       const dataUser = user.dataValues;
       delete dataUser.password;
       delete dataUser.createdAt;

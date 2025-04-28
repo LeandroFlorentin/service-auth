@@ -6,7 +6,7 @@ import { middlewareDecoded } from '../middlewares/decoded.middleware';
 import { middlewareRoleAdmin, middlewareVerifyRoleUpdated } from '../middlewares/roles.middleware';
 import { getDate } from '../utils/moment';
 import { verifyEmail, verifyPassword } from '../utils/functions';
-import Orm from '../utils/sequelize';
+import CustomError from '../utils/customError';
 
 interface IClassUserController {
   getControllers(): IControllers[];
@@ -36,16 +36,12 @@ class classUserController implements IClassUserController {
     try {
       const { id } = req.user!;
       const UserModel = Database.getModel(this.model);
-      if (!UserModel) return res.status(500).json(responseStructure(500, 'Model not found', { model: this.model }));
+      if (!UserModel) throw new CustomError('Model not found', 500);
       const emailVerify = verifyEmail(req.body.email);
-      if (!emailVerify) return res.status(400).json(responseStructure(400, 'Format email Invalid', { email: req.body.email }));
+      if (!emailVerify) throw new CustomError('Format email Invalid', 400);
       const passwordVerify = verifyPassword(req.body.password);
       if (!passwordVerify) {
-        return res.status(400).json(
-          responseStructure(400, 'The password contains one letter, and one number and your longitude should 5 - 30 characters.', {
-            password: req.body.password,
-          })
-        );
+        throw new CustomError('The password contains one letter, and one number and your longitude should 5 - 30 characters.', 400);
       }
       req.body.password = req.body.password && (await hashPassword(req.body?.password));
       const user: any = await UserModel.create({ ...req.body, role: JSON.stringify(req.body.role) });
@@ -64,9 +60,9 @@ class classUserController implements IClassUserController {
     try {
       const { id } = req.query;
       const UserModel = Database.getModel(this.model);
-      if (!UserModel) return res.status(500).json(responseStructure(500, 'Model not found', { model: this.model }));
+      if (!UserModel) throw new CustomError('Model not found', 500);
       const user = await UserModel.findOne({ where: { id, disabled: 0 } });
-      if (!user) return res.status(404).json(responseStructure(404, 'User not found', { iduser: id }));
+      if (!user) throw new CustomError(`User not found { iduser: id }`,404)
       const { dataValues: values } = user;
       delete values.password;
       values.role = JSON.parse(values.role);
@@ -79,9 +75,9 @@ class classUserController implements IClassUserController {
   private disabledUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.query;
-      if (!id) return res.status(404).json(responseStructure(404, 'Id not send in query params', {}));
+      if (!id) throw new CustomError('Id not send in query params', 404);
       const UserModel = Database.getModel(this.model);
-      if (!UserModel) return res.status(500).json(responseStructure(500, 'Model not found', { model: this.model }));
+      if (!UserModel) throw new CustomError('Model not found', 500);
       await UserModel.update({ disabled: 1, updatedAt: getDate() }, { where: { id } });
       return res.status(200).json(responseStructure(200, 'Succesfully delete user', {}));
     } catch (error) {
@@ -92,9 +88,9 @@ class classUserController implements IClassUserController {
   private updateUser = async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
       const { id } = req.query;
-      if (!id) return res.status(404).json(responseStructure(404, 'Id not send in query params', {}));
+      if (!id) throw new CustomError('Id not send in query params', 404);
       const UserModel = Database.getModel(this.model);
-      if (!UserModel) return res.status(500).json(responseStructure(500, 'Model not found', { model: this.model }));
+      if (!UserModel) throw new CustomError('Model not found', 500);
       req.body.password = req.body.password && (await hashPassword(req.body?.password));
       await UserModel.update({ ...req.body, updatedAt: getDate() }, { where: { id } });
       return res.status(200).json(responseStructure(200, 'Succesfully upload user', {}));

@@ -1,6 +1,13 @@
 import { ErrorRequestHandler } from '../types/express.types';
 import { responseStructure } from '../utils/response';
+import CustomError from '../utils/customError';
 export const middlewareError: ErrorRequestHandler = (err, req, res, next): void => {
+  
+  if (err instanceof CustomError) {
+    res.status(err.status).json(responseStructure(err.status, err.message,{}));
+    return;
+  }
+
   if (err?.name?.toLowerCase().includes('sequelize')) {
     if (err.errors?.length) {
       const [firstError] = err.errors;
