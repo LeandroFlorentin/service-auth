@@ -241,10 +241,6 @@ This is the main method to login, which is used to get the **accessToken**. You 
 
 ### Create
 
-```diff
-+ Allowed user type ADMIN
-```
-
 ```http
   POST users/create
 ```
