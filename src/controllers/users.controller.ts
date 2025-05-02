@@ -102,7 +102,7 @@ class classUserController implements IClassUserController {
   private initializeControllers(): void {
     this.controllers = [
       { method: 'get', path: '/me', handler: this.getUser, middlewares: [...this.middlewares, middlewareVerifyRoleUpdated] },
-      { method: 'post', path: '/create', handler: this.createUser, middlewares: [...this.middlewares, middlewareRoleAdmin] },
+      { method: 'post', path: '/create', handler: this.createUser, middlewares: [] },
       { method: 'delete', path: '/delete', handler: this.disabledUser, middlewares: [...this.middlewares, middlewareRoleAdmin] },
       { method: 'put', path: '/update', handler: this.updateUser, middlewares: [...this.middlewares, middlewareVerifyRoleUpdated] },
     ];
