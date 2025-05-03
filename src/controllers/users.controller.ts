@@ -34,7 +34,6 @@ class classUserController implements IClassUserController {
 
   private createUser = async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
-      const { id } = req.user!;
       const UserModel = Database.getModel(this.model);
       if (!UserModel) throw new CustomError('Model not found', 500);
       const emailVerify = verifyEmail(req.body.email);

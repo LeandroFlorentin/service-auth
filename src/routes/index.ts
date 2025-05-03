@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import UserRoutes from './users.routes';
+import RouteUsers from './users.routes';
 import AuthRoutes from './auth.routes';
 
 interface IRoutes {
@@ -8,7 +8,7 @@ interface IRoutes {
 
 class Routes implements IRoutes {
   private router: Router = Router();
-  private userRoutes = new UserRoutes();
+  private userRoutes = new RouteUsers();
   private authRoutes = new AuthRoutes();
 
   constructor() {
@@ -16,8 +16,8 @@ class Routes implements IRoutes {
   }
 
   private initializeRoutes(): void {
-    this.router.use('/users', this.userRoutes.getRoutes());
     this.router.use('/auth', this.authRoutes.getRoutes());
+    this.router.use('/users', this.userRoutes.getRoutes());
   }
 
   public getRoutes(): Router {

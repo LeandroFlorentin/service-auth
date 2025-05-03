@@ -11,6 +11,7 @@ class RouteUsers implements IRouteUsers {
 
   public getRoutes(): Router {
     this.controllers.forEach((route) => {
+      console.log(`Registering route: [${route.method.toUpperCase()}] ${route.path}`);
       const middlewares = route.middlewares || [];
       this.router[route.method](`${route.path}`, ...middlewares, route.handler);
     });

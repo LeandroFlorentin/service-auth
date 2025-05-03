@@ -21,15 +21,16 @@ class App implements IApp {
     this.initializeRoutes();
     this.initializeErrorMiddleware();
   }
-  private initializeRoutes() {
-    const routes = new Routes().getRoutes();
-    this.app.use('/', routes);
-  }
 
   private initializeMiddlewares(): void {
     this.app.use(morgan('dev'));
     this.app.use(cors());
     this.app.use(express.json());
+  }
+
+  private initializeRoutes() {
+    const routes = new Routes().getRoutes();
+    this.app.use('/', routes);
   }
 
   private initializeErrorMiddleware(): void {
