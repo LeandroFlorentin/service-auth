@@ -1,0 +1,30 @@
+services:
+  db:
+    container_name: db_auth
+    image: postgres:15.1
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=${USER}
+      - POSTGRES_PASSWORD=${PASSWORD}
+      - POSTGRES_DB=${DATABASE}
+  service-auth:
+    depends_on:
+      - db
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: service-auth:latest
+    environment:
+      - PORT=${PORT}
+      - DIALECT=${DIALECT}
+      - HOST=db
+      - USER=${USER}
+      - PASSWORD=${PASSWORD}
+      - DATABASE=${DATABASE}
+      - JWT_SECRET=${JWT_SECRET}
+      - URL_GENERAL=${URL_GENERAL}
+    container_name: service-auth
+    ports:
+      - ${PORT}:${PORT}
+    restart: always
