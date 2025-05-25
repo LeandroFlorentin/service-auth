@@ -13,7 +13,6 @@ export function middlewareDecoded(req: RequestWhenAuth, res: Response, next: Nex
     req.user = decoded.data;
     next();
   } catch (error: any) {
-    console.log('ERRROR', error);
     const errorObj = { data: error, type: 'jwt', status: 401 };
     next(errorObj);
   }

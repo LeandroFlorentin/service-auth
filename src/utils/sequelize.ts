@@ -6,12 +6,6 @@ class Orm {
   private static instance: Sequelize;
 
   public static async getInstance(): Promise<Sequelize> {
-    console.log('params', {
-      DATABASE,
-      USER,
-      PASSWORD,
-      HOST,
-    });
     try {
       if (!Orm.instance) {
         if (!DIALECT || !['mysql', 'postgres', 'sqlite', 'mariadb', 'mssql', 'db2', 'snowflake', 'oracle'].includes(DIALECT)) {

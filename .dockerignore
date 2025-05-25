@@ -1,2 +1,7 @@
 package-lock.json
 node_modules/
+.prettierrc
+nodemon.json
+README.md
+Dockerfile
+docker-compose.yml
