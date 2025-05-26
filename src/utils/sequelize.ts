@@ -1,11 +1,18 @@
+import { injectable } from '../utils/inversify';
 import { Sequelize, Dialect, Op as OpSequelize } from 'sequelize';
 const { DATABASE, USER, PASSWORD, HOST, DIALECT } = process.env;
 const dialect = DIALECT as Dialect | undefined;
 
-class Orm {
+export interface IOrm{
+  getInstance(): Promise<Sequelize>;
+  Op: typeof OpSequelize;
+}
+
+@injectable()
+class Orm implements IOrm {
   private static instance: Sequelize;
 
-  public static async getInstance(): Promise<Sequelize> {
+  public async getInstance() {
     try {
       if (!Orm.instance) {
         if (!DIALECT || !['mysql', 'postgres', 'sqlite', 'mariadb', 'mssql', 'db2', 'snowflake', 'oracle'].includes(DIALECT)) {
@@ -28,7 +35,7 @@ class Orm {
     return Orm.instance;
   }
 
-  public static Op = OpSequelize;
+  public Op = OpSequelize;
 }
 
 export default Orm;

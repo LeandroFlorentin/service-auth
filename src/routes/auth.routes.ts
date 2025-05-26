@@ -1,16 +1,16 @@
 import { Router } from 'express';
-import classAuthController from '../controllers/auth.controller';
+import { IRoutes } from '../interfaces/src/routes/index';
+import { injectable, inject } from '../utils/inversify';
+import { IClassController } from '../interfaces/src/controllers/index';
+import TYPES from '../inverfisy/types';
 
-interface IRoutesAuth {
-  getRoutes(): Router;
-}
-
-class RoutesAuth implements IRoutesAuth {
+@injectable()
+class RoutesAuth implements IRoutes {
   private router: Router = Router();
-  private controllers = new classAuthController().getControllers();
-
+  constructor(@inject(TYPES.AuthController) private authController: IClassController) {}
   public getRoutes(): Router {
-    this.controllers.forEach((route) => {
+    const controllers = this.authController.getControllers();
+    controllers.forEach((route) => {
       const middlewares = route.middlewares || [];
       this.router[route.method](`${route.path}`, ...middlewares, route.handler);
     });

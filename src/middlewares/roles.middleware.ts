@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from '../types/express.types';
+import { Request, Response, NextFunction } from '../interfaces/express.types';
 import { responseStructure } from '../utils/response';
 
 export function middlewareRoleAdmin(req: Request, res: Response, next: NextFunction) {

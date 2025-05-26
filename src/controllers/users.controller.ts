@@ -1,30 +1,23 @@
 import { hashPassword } from '../utils/bcrypt';
-import { RequestWithUser, Response, NextFunction, Request } from '../types/express.types';
 import { responseStructure } from '../utils/response';
-import Database from '../db';
 import { middlewareDecoded } from '../middlewares/decoded.middleware';
 import { middlewareRoleAdmin, middlewareVerifyRoleUpdated } from '../middlewares/roles.middleware';
 import { getDate } from '../utils/moment';
 import { verifyEmail, verifyPassword } from '../utils/functions';
 import CustomError from '../utils/customError';
+import { Response, Request, RequestWithUser, NextFunction } from '../interfaces/express.types';
+import { IClassController, IController } from '../interfaces/src/controllers';
+import TYPES from '../inverfisy/types';
+import { injectable, inject } from '../utils/inversify';
+import { IDatabase } from '../interfaces/db.interface';
 
-interface IClassUserController {
-  getControllers(): IControllers[];
-}
-
-interface IControllers {
-  path: string;
-  handler: (req: RequestWithUser, res: Response, next: NextFunction) => void;
-  method: 'post' | 'get' | 'put' | 'delete' | 'patch';
-  middlewares?: ((req: any, res: Response, next: NextFunction) => void)[];
-}
-
-class classUserController implements IClassUserController {
+@injectable()
+class classUserController implements IClassController {
   private middlewares = [middlewareDecoded];
   private model: string = 'users';
-  private controllers: IControllers[] = [];
+  private controllers: IController[] = [];
 
-  constructor() {
+  constructor(@inject(TYPES.Database) private database: IDatabase) {
     this.createUser = this.createUser.bind(this);
     this.disabledUser = this.disabledUser.bind(this);
     this.getUser = this.getUser.bind(this);
@@ -32,24 +25,24 @@ class classUserController implements IClassUserController {
     this.initializeControllers();
   }
 
-  private createUser = async (req: RequestWithUser, res: Response, next: NextFunction) => {
+  private createUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const UserModel = Database.getModel(this.model);
+      const user = req.body as RequestWithUser["body"];
+      const UserModel = this.database.getModel(this.model);
       if (!UserModel) throw new CustomError('Model not found', 500);
-      const emailVerify = verifyEmail(req.body.email);
+      const emailVerify = verifyEmail(user.email);
       if (!emailVerify) throw new CustomError('Format email Invalid', 400);
-      const passwordVerify = verifyPassword(req.body.password);
+      const passwordVerify = verifyPassword(user.password);
       if (!passwordVerify) {
         throw new CustomError('The password contains one letter, and one number and your longitude should 5 - 30 characters.', 400);
       }
-      req.body.password = req.body.password && (await hashPassword(req.body?.password));
-      const user: any = await UserModel.create({ ...req.body, role: JSON.stringify(req.body.role) });
-      const { dataValues: values } = user;
+      user.password = user.password && (await hashPassword(user?.password));
+      const userCreate: any = await UserModel.create({ ...user });
+      const { dataValues: values } = userCreate;
       delete values.password;
       delete values.createdAt;
       delete values.updatedAt;
-      values.role = JSON.parse(values.role);
-      return res.status(200).json(responseStructure(200, `User ${req.body.username} is succesfull created`, { ...values }));
+      return res.status(200).json(responseStructure(200, `User ${user.username} is succesfull created`, { ...values }));
     } catch (error: any) {
       next(error);
     }
@@ -58,13 +51,12 @@ class classUserController implements IClassUserController {
   private getUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.query;
-      const UserModel = Database.getModel(this.model);
+      const UserModel = this.database.getModel(this.model);
       if (!UserModel) throw new CustomError('Model not found', 500);
       const user = await UserModel.findOne({ where: { id, disabled: 0 } });
-      if (!user) throw new CustomError(`User not found { iduser: id }`,404)
+      if (!user) throw new CustomError(`User not found { iduser: ${id} }`, 404);
       const { dataValues: values } = user;
       delete values.password;
-      values.role = JSON.parse(values.role);
       return res.status(200).json(responseStructure(200, 'Info OK', { ...values }));
     } catch (error) {
       next(error);
@@ -75,7 +67,7 @@ class classUserController implements IClassUserController {
     try {
       const { id } = req.query;
       if (!id) throw new CustomError('Id not send in query params', 404);
-      const UserModel = Database.getModel(this.model);
+      const UserModel = this.database.getModel(this.model);
       if (!UserModel) throw new CustomError('Model not found', 500);
       await UserModel.update({ disabled: 1, updatedAt: getDate() }, { where: { id } });
       return res.status(200).json(responseStructure(200, 'Succesfully delete user', {}));
@@ -84,13 +76,14 @@ class classUserController implements IClassUserController {
     }
   };
 
-  private updateUser = async (req: RequestWithUser, res: Response, next: NextFunction) => {
+  private updateUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
+      const user = req.body as RequestWithUser["body"];
       const { id } = req.query;
       if (!id) throw new CustomError('Id not send in query params', 404);
-      const UserModel = Database.getModel(this.model);
+      const UserModel = this.database.getModel(this.model);
       if (!UserModel) throw new CustomError('Model not found', 500);
-      req.body.password = req.body.password && (await hashPassword(req.body?.password));
+      user.password = user.password && (await hashPassword(user?.password));
       await UserModel.update({ ...req.body, updatedAt: getDate() }, { where: { id } });
       return res.status(200).json(responseStructure(200, 'Succesfully upload user', {}));
     } catch (error) {
@@ -106,7 +99,7 @@ class classUserController implements IClassUserController {
       { method: 'put', path: '/update', handler: this.updateUser, middlewares: [...this.middlewares, middlewareVerifyRoleUpdated] },
     ];
   }
-  public getControllers(): IControllers[] {
+  public getControllers(): IController[] {
     return this.controllers;
   }
 }

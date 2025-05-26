@@ -1,21 +1,25 @@
 import express, { Application } from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
-import Routes from './routes/index';
-import Database from './db';
-import { TypeSequelize } from './types/sequelize.types';
 import { middlewareError } from './middlewares/error.middleware';
 import UserPrueba from './utils/user';
 import swagger from './swagger/swagger';
+import { TypeSequelize } from './interfaces/sequelize.types';
+import { IApp } from './interfaces/app.interface';
+import { inject, injectable } from './utils/inversify';
+import { IRoutes } from './interfaces/src/routes';
+import { IDatabase } from './interfaces/db.interface';
+import { IUserPrueba } from './utils/user';
+import TYPES from './inverfisy/types';
 
-interface IApp {
-  listen(port: number): void;
-  connectDatabase(): Promise<TypeSequelize>;
-}
-
+@injectable()
 class App implements IApp {
   private app: Application;
-  constructor() {
+  constructor(
+    @inject(TYPES.Routes) private routes: IRoutes,
+    @inject(TYPES.Database) private database: IDatabase,
+    @inject(TYPES.UserPrueba) private userPrueba: IUserPrueba
+  ) {
     this.app = express();
     this.initializeMiddlewares();
     this.initializeRoutes();
@@ -29,7 +33,7 @@ class App implements IApp {
   }
 
   private initializeRoutes() {
-    const routes = new Routes().getRoutes();
+    const routes = this.routes.getRoutes();
     this.app.use('/', routes);
   }
 
@@ -38,18 +42,16 @@ class App implements IApp {
   }
 
   public async connectDatabase(): Promise<TypeSequelize> {
-    return await Database.connect();
+    return await this.database.connect();
   }
 
   public listen(port: number): void {
     this.app.listen(port, async () => {
       const connect = await this.connectDatabase();
-      connect.sync({ force: true }).then(() => {
-        swagger(this.app, port);
-        UserPrueba.createUser().then(() => {
-          console.log(`Server is running on port ${port}`);
-        });
-      });
+      await connect.sync({ force: true })
+      swagger(this.app, port);
+      await this.userPrueba.createUser()
+      console.log(`Server is running on port ${port}`);
     });
   }
 }

@@ -1,4 +1,4 @@
-import { RequestWhenAuth, Response, NextFunction } from '../types/express.types';
+import { RequestWhenAuth, Response, NextFunction } from '../interfaces/express.types';
 import { getBearerToken } from '../utils/functions';
 import { decodedToken, verifyToken } from '../utils/jwt';
 import { responseStructure } from '../utils/response';

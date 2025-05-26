@@ -1,7 +1,7 @@
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import path from 'path';
-import { Application } from '../types/express.types';
+import { Application } from '../interfaces/express.types';
 import Paths from './paths/index';
 const { URL_GENERAL } = process.env;
 

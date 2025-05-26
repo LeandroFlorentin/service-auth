@@ -1,4 +1,4 @@
-import { ErrorRequestHandler } from '../types/express.types';
+import { ErrorRequestHandler } from '../interfaces/express.types';
 import { responseStructure } from '../utils/response';
 import CustomError from '../utils/customError';
 export const middlewareError: ErrorRequestHandler = (err, req, res, next): void => {

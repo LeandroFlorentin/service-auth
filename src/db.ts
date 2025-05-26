@@ -1,26 +1,33 @@
-import { TypeSequelize, TypeModel } from './types/sequelize.types';
-import Orm from './utils/sequelize';
+import { TypeSequelize, TypeModel } from './interfaces/sequelize.types';
+import {IOrm} from './utils/sequelize';
 import Models from './models/index';
+import { IModelsReturn, IDatabase } from './interfaces/db.interface';
+import { injectable,inject } from './utils/inversify';
+import TYPES from './inverfisy/types';
 
-interface IModelsReturn {
-  [key: string]: TypeModel;
-}
-
-class Database {
+@injectable()
+class Database implements IDatabase {
   private static models: IModelsReturn = {};
 
-  static async connect(): Promise<TypeSequelize> {
-    const sequelize = await Orm.getInstance();
+  constructor(@inject(TYPES.Orm) private Orm: IOrm) {
+    if (!Database.models) {
+      Database.models = {};
+    }
+
+  }
+
+  public async connect(): Promise<TypeSequelize> {
+    const sequelize = await this.Orm.getInstance();
     await this.syncModels(sequelize);
     return sequelize;
   }
-  private static async syncModels(sequelize: TypeSequelize): Promise<void> {
+  private async syncModels(sequelize: TypeSequelize): Promise<void> {
     const models: { [key: string]: (sequelize: TypeSequelize) => TypeModel } = Models;
     for (const model in models) {
       Database.models[model] = models[model](sequelize);
     }
   }
-  static getModel(modelName: string) {
+  public getModel(modelName: string) {
     return Database.models[modelName];
   }
 }

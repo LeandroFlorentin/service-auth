@@ -1,17 +1,15 @@
 import { Router } from 'express';
-import RouteUsers from './users.routes';
+import RoutesUsers from './users.routes';
 import AuthRoutes from './auth.routes';
+import { IRoutes } from '../interfaces/src/routes/index';
+import { injectable, inject } from '../utils/inversify';
+import TYPES from '../inverfisy/types';
 
-interface IRoutes {
-  getRoutes(): Router;
-}
-
+@injectable()
 class Routes implements IRoutes {
   private router: Router = Router();
-  private userRoutes = new RouteUsers();
-  private authRoutes = new AuthRoutes();
 
-  constructor() {
+  constructor(@inject(TYPES.RoutesUsers) private userRoutes: IRoutes,@inject(TYPES.RoutesAuth) private authRoutes: IRoutes) {
     this.initializeRoutes();
   }
 
