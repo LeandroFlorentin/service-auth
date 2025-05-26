@@ -1,16 +1,17 @@
-import classUserController from '../controllers/users.controller';
+import { IRoutes } from '../interfaces/src/routes/index';
 import { Router } from 'express';
+import { injectable, inject } from '../utils/inversify';
+import { IClassController } from '../interfaces/src/controllers/index';
+import TYPES from '../inverfisy/types';
 
-interface IRouteUsers {
-  getRoutes(): Router;
-}
-
-class RouteUsers implements IRouteUsers {
+@injectable()
+class RoutesUsers implements IRoutes {
   private router: Router = Router();
-  private controllers = new classUserController().getControllers();
+  constructor(@inject(TYPES.UserController) private userController: IClassController) {}
 
   public getRoutes(): Router {
-    this.controllers.forEach((route) => {
+    const controllers = this.userController.getControllers();
+    controllers.forEach((route) => {
       const middlewares = route.middlewares || [];
       this.router[route.method](`${route.path}`, ...middlewares, route.handler);
     });
@@ -18,4 +19,4 @@ class RouteUsers implements IRouteUsers {
   }
 }
 
-export default RouteUsers;
+export default RoutesUsers;

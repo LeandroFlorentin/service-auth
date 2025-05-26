@@ -1,12 +1,6 @@
 import jwt from 'jsonwebtoken';
+import { IDataToken } from '../interfaces/utils';
 const { JWT_SECRET } = process.env;
-
-interface IDataToken {
-  username: string;
-  role: string;
-  email: string;
-  id: number;
-}
 
 export const verifyToken = (token: string) => jwt.verify(token, JWT_SECRET as string);
 

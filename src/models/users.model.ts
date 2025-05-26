@@ -1,6 +1,6 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import { Sequelize } from 'sequelize';
-import { TypeModel } from '../types/sequelize.types';
+import { TypeModel } from '../interfaces/sequelize.types';
 
 type UserAttributes = {
   id: number;
@@ -48,7 +48,7 @@ export default (sequelize: Sequelize): TypeModel => {
       },
       role: {
         type: DataTypes.JSON,
-        defaultValue: JSON.stringify(['ADMIN']),
+        defaultValue: ['ADMIN'],
       },
       disabled: {
         type: DataTypes.INTEGER,

@@ -1,8 +1,9 @@
 import 'dotenv/config';
-import App from './src/app';
+import 'reflect-metadata';
+import { IApp } from './src/interfaces/app.interface';
+import { container, types } from './src/inverfisy/inversify.config';
 
 const { PORT } = process.env;
 
-console.log(PORT);
-
-new App().listen(Number(PORT));
+const app = container.get<IApp>(types.App);
+app.listen(Number(PORT));
