@@ -15,7 +15,7 @@ export function middlewareRoleAdmin(req: Request, res: Response, next: NextFunct
 export function middlewareVerifyRoleUpdated(req: Request, res: Response, next: NextFunction) {
   try {
     const { id } = req.query;
-    if (!id) return res.status(404).json(responseStructure(404, 'Not send id in query params', {}));
+    if (!id) return res.status(404).json(responseStructure(400, 'Not send id in query params', {}));
     const { role, id: iduser } = req.user!;
     if (role.includes('ADMIN')) return next();
     if (role.includes('USER')) {

@@ -2,7 +2,6 @@ import express, { Application } from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
 import { middlewareError } from './middlewares/error.middleware';
-import UserPrueba from './utils/user';
 import swagger from './swagger/swagger';
 import { TypeSequelize } from './interfaces/sequelize.types';
 import { IApp } from './interfaces/app.interface';
@@ -53,6 +52,10 @@ class App implements IApp {
       await this.userPrueba.createUser()
       console.log(`Server is running on port ${port}`);
     });
+  }
+
+  public getApp(): Application {
+    return this.app;
   }
 }
 

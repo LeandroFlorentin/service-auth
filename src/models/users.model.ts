@@ -18,7 +18,7 @@ class User extends Model<UserAttributes, UserCreationAttributes> {
   declare username: string;
   declare email: string;
   declare password: string;
-  declare role: number;
+  declare role: string[];
   declare readonly createdAt: Date;
   declare readonly updatedAt: Date;
   declare disabled: number;
@@ -28,7 +28,7 @@ export default (sequelize: Sequelize): TypeModel => {
   return User.init(
     {
       id: {
-        type: DataTypes.INTEGER.UNSIGNED,
+        type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
       },

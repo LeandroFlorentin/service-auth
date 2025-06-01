@@ -10,6 +10,7 @@ import { IClassController, IController } from '../interfaces/src/controllers';
 import TYPES from '../inverfisy/types';
 import { injectable, inject } from '../utils/inversify';
 import { IDatabase } from '../interfaces/db.interface';
+import { verifyBody } from '../utils/verify';
 
 @injectable()
 class classUserController implements IClassController {
@@ -28,8 +29,13 @@ class classUserController implements IClassController {
   private createUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const user = req.body as RequestWithUser["body"];
+      const elements = ['username', 'email', 'password'];
+      const verify = verifyBody(elements,user);
+      if(!verify) throw new CustomError('Bad request', 400);
       const UserModel = this.database.getModel(this.model);
       if (!UserModel) throw new CustomError('Model not found', 500);
+      const userExist = await UserModel.findOne({ where: { username: user.username } });
+      if( userExist ) throw new CustomError(`User ${user.username} already exist`, 400);
       const emailVerify = verifyEmail(user.email);
       if (!emailVerify) throw new CustomError('Format email Invalid', 400);
       const passwordVerify = verifyPassword(user.password);
@@ -66,7 +72,7 @@ class classUserController implements IClassController {
   private disabledUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.query;
-      if (!id) throw new CustomError('Id not send in query params', 404);
+      if (!id) throw new CustomError('Id not send in query params', 400);
       const UserModel = this.database.getModel(this.model);
       if (!UserModel) throw new CustomError('Model not found', 500);
       await UserModel.update({ disabled: 1, updatedAt: getDate() }, { where: { id } });
@@ -80,7 +86,7 @@ class classUserController implements IClassController {
     try {
       const user = req.body as RequestWithUser["body"];
       const { id } = req.query;
-      if (!id) throw new CustomError('Id not send in query params', 404);
+      if (!id) throw new CustomError('Id not send in query params', 400);
       const UserModel = this.database.getModel(this.model);
       if (!UserModel) throw new CustomError('Model not found', 500);
       user.password = user.password && (await hashPassword(user?.password));

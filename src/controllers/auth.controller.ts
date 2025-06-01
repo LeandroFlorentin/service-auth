@@ -46,7 +46,6 @@ class classAuthControllers implements IClassController {
       const token = getToken(dataUser);
       return res.status(200).json(responseStructure(200, 'Succesfull Auth', { ...dataUser, access_token: token }));
     } catch (error: any) {
-      console.log('Error: ', error);
       next(error);
     }
   };
