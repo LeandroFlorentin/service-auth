@@ -1,6 +1,7 @@
 # Microservice Auth
 
-This project was developed in NodeJS using typescript. It is a service that manages users and permits perform basic operations in this users how login, get data user, create, modify, and delete users.
+This project was developed using Node.js with TypeScript, integrating Jest for unit and integration testing. Additionally, Docker was used to simplify deployment and environment management.
+The microservice handles user management, allowing basic operations such as login, retrieving user data, creating, updating, and deleting users.
 
 #Table of contents:
 
